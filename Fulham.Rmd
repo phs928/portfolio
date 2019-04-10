@@ -1,0 +1,337 @@
+---
+title: "Fulham"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+setwd("C:/Career/+Job/Project Oracle")
+
+rm(list=ls())
+
+fulham <- read.csv("Data.csv", stringsAsFactors = FALSE)
+total <- read.csv("Total.csv", stringsAsFactors = FALSE)
+
+library(foreign)
+library(tidyverse)
+library(lubridate)
+
+fulham <- fulham %>% 
+  select(X.1, X.3, X.4, X.5, X.8, Rosenberg.Questionnaire, X.14, X.16, X.18, X.20, Outcome.Star..Youth.Star., X.22, X.25, X.26, X.29, X.30, X.33, X.34, X.37, X.38, X.41, X.42, X.45, X.46, X.47, X.48, X.50) 
+
+names(fulham)[1] <- "Name"
+names(fulham)[2] <- "Age"
+names(fulham)[3] <- "Gender"
+names(fulham)[4] <- "Ethnicity"
+names(fulham)[5] <- "FirstAttended"
+names(fulham)[6] <- "Rosenberg_base"
+names(fulham)[7] <- "Rosenberg_2nd"
+names(fulham)[8] <- "Rosenberg_2diff"
+names(fulham)[9] <- "Rosenberg_3rd"
+names(fulham)[10] <- "Rosenberg_3diff"
+names(fulham)[11] <- "Outcome_Makebase"
+names(fulham)[12] <- "Outcome_Make2nd"
+names(fulham)[13] <- "Outcome_Hopebase"
+names(fulham)[14] <- "Outcome_Hope2nd"
+names(fulham)[15] <- "Outcome_Wellbase"
+names(fulham)[16] <- "Outcome_Well2nd"
+names(fulham)[17] <- "Outcome_Edubase"
+names(fulham)[18] <- "Outcome_Edu2nd"
+names(fulham)[19] <- "Outcome_Combase"
+names(fulham)[20] <- "Outcome_Com2nd"
+names(fulham)[21] <- "Outcome_Chobase"
+names(fulham)[22] <- "Outcome_Cho2nd"
+names(fulham)[23] <- "Outcome_start"
+names(fulham)[24] <- "Outcome_final"
+names(fulham)[25] <- "Outcome_diff"
+names(fulham)[26] <- "Outcomes"
+names(fulham)[27] <- "Qualifications"
+
+names(total)[1] <- "Name"
+names(total)[2] <- "FirstAttended"
+names(total)[3] <- "NumberofAttended"
+names(total)[4] <- "HoursAttended"
+
+combined <- full_join(fulham, total, by=c("Name", "FirstAttended"))
+
+combined <- combined %>%
+  filter(!is.na(NumberofAttended),
+         !is.na(HoursAttended))
+
+combined1 <- combined %>% 
+  separate(HoursAttended, into = c("Hours", "Minutes", "Seconds"), sep=":", convert=TRUE)
+
+combined2 <- combined1 %>%
+  mutate(M2 = Hours*60) %>%
+  mutate(Minutes = M2 + Minutes) %>%
+  select(-c(Hours, Seconds, M2))
+
+combined2 <- combined2 %>%
+  separate(Ethnicity, into = c("Ethnicity", "Small"), sep=" ", convert=TRUE) %>%
+  separate(Age, into = c("Age", "months"), sep= " ", convert=TRUE) %>%
+  select(-c(months, Small))
+
+combined2$Age <- factor(combined2$Age)
+combined2$Gender <- factor(combined2$Gender, 
+                           labels = c("Female", "Male"))
+
+combined2$Ethnicity[combined2$Ethnicity == "Bangladeshi"] <- "Others"
+combined2$Ethnicity[combined2$Ethnicity == "Latin"] <- "Others"
+combined2$Ethnicity[combined2$Ethnicity == "batin"] <- "Black"
+combined2$Ethnicity[combined2$Ethnicity == "Black/White"] <- "Others"
+combined2$Ethnicity[combined2$Ethnicity == "Preferred"] <- "Preferred not to say"
+combined2$Ethnicity[combined2$Ethnicity == "Portugese"] <- "Others"
+combined2$Ethnicity[combined2$Ethnicity == " "] <- "Others"
+
+combined2[, 6:29] <- sapply(combined2[, 6:29], as.numeric)
+
+Ro <- combined2 %>%
+  select(Name, Age, Gender, Ethnicity, FirstAttended, starts_with("Rosenberg"), Outcomes, NumberofAttended, Minutes)
+Ro1 <- Ro %>%
+  filter(!is.na(Rosenberg_2diff))
+
+
+Out <- combined2 %>%
+  select(Name, Age, Gender, Ethnicity, FirstAttended, starts_with("Outcome"), Outcomes, NumberofAttended, Minutes)
+Out1 <- Out %>%
+ filter(!is.na(Outcome_Make2nd))
+Out2 <- Out %>%
+  filter(!is.na(Outcome_Hope2nd))
+Out3 <- Out %>%
+  filter(!is.na(Outcome_Well2nd))
+Out4 <- Out %>%
+  filter(!is.na(Outcome_Edu2nd))
+Out5 <- Out %>%
+  filter(!is.na(Outcome_Com2nd))
+Out6 <- Out %>%
+  filter(!is.na(Outcome_Cho2nd))
+
+
+Qual <- combined2 %>%
+  select(Name, Age, Gender, Ethnicity, FirstAttended, Qualifications, Outcomes, NumberofAttended, Minutes)
+Qual1 <- Qual %>%
+  filter(!is.na(Qualifications))
+
+```
+
+```{r include=FALSE}
+
+# Descriptive 
+
+table(Ro1$Gender)
+table(Ro1$Ethnicity)
+table(Ro1$Age)
+
+table(Qual1$Gender)
+table(Qual1$Ethnicity)
+table(Qual$Age)
+
+des1 <- ggplot(Ro1, aes(Gender)) + 
+  geom_bar() + 
+  ggtitle("Gender distribution of Rosenberg") + 
+  xlab("Gender") + ylab("Count") + 
+  theme_bw()
+des1
+  
+des2 <- ggplot(Ro1, aes(Ethnicity)) + 
+  geom_bar() + 
+  ggtitle("Ethnic distribution of Rosenberg") + 
+  xlab("Ethnicity") + ylab("Count") + 
+  theme_bw()
+des2
+
+des3 <- ggplot(Ro1, aes(Age)) + 
+  geom_bar() + 
+  ggtitle("Age distribution of Rosenberg") + 
+  xlab("Age range") + ylab("Count") + 
+  theme_bw() 
+des3
+
+des4 <- ggplot(Qual1, aes(Gender)) + 
+  geom_bar() + 
+  ggtitle("Gender distribution of Qualifications") + 
+  xlab("Gender") + ylab("Count") + 
+  theme_bw() 
+des4
+
+des5 <- ggplot(Qual1, aes(Ethnicity)) + 
+  geom_bar() + 
+  ggtitle("Ethnic distribution of Qualifications") + 
+  xlab("Ethnicity") + ylab("Count") + 
+  theme_bw() 
+des5
+
+des6 <- ggplot(Qual1, aes(Age)) + 
+  geom_bar() + 
+  ggtitle("Age distribution of Qualifications") + 
+  xlab("Age range") + ylab("Count") + 
+  theme_bw() 
+des6
+
+  #barplot(Ro1[order(Ro1[,3], decreasing=TRUE),], main="Gender distribution of Rosenberg", xlab="Gender", cex.axis=0.8, cex.names=1)
+#des2 <- barplot(table(Ro1$Ethnicity), main="Ethnic distribution of Rosenberg", xlab="Ethnicity", cex.axis=0.8, cex.names=1)
+#des3 <- barplot(table(Ro1$Age), main="Age distribution of Rosenberg", xlab="Age", cex.axis=0.8, cex.names=1)
+
+#des4 <- barplot(table(Qual1$Gender), main="Barplot of gender 2", xlab="Gender", cex.axis=0.8, cex.names=1)
+#des5 <- barplot(table(Qual1$Ethnicity), main="Barplot of ethnicity 2", xlab="Ethnicity", cex.axis=0.8, cex.names=1)
+#des6 <- barplot(table(Qual1$Age), main="Barplot of age", xlab="Age 2", cex.axis=0.8, cex.names=1)
+
+```
+
+
+```{r include=FALSE}
+
+# correlation + Pearson's R  
+
+# 1) DV: Rosenberg, IV: Number of sessions attended 
+
+plot1 <- ggplot(Ro1) +
+  geom_point(mapping=aes(x=NumberofAttended, y=Rosenberg_2diff)) + 
+  ggtitle("Plot 1") + 
+  xlab("Number of sessions attended") + ylab("The difference of Rosenberg scores") + 
+  theme_bw()
+plot1
+
+P1 <- cor.test(Ro1$NumberofAttended, Ro1$Rosenberg_2diff, conf.level=0.95)
+P1
+
+# 2) DV: Rosenberg, IV: Minutes of sessions attended 
+
+plot2 <- ggplot(Ro1) +
+  geom_point(mapping=aes(x=Minutes, y=Rosenberg_2diff))+ 
+  ggtitle("Plot 2") + 
+  xlab("Minutes of sessions attended") + ylab("The difference of Rosenberg scores") + 
+  theme_bw()
+plot2
+
+P2 <- cor.test(Ro1$Minutes, Ro1$Rosenberg_2diff, conf.level=0.95)
+P2
+
+# 3) DV: Rosenberg, IV: Number of workshops attended 
+
+plot3 <- ggplot(Ro1) + 
+  geom_point(mapping=aes(x=Outcomes, y=Rosenberg_2diff))+ 
+  ggtitle("Plot 3") + 
+  xlab("Number of workshops attended") + ylab("The difference of Rosenberg scores") + 
+  theme_bw()
+plot3
+
+P3 <- cor.test(Ro1$Outcomes, Ro1$Rosenberg_2diff, conf.level=0.95)
+P3
+
+# 4) DV: Qualifications, IV: Number of sessions attended 
+
+plot4 <- ggplot(Qual1) + 
+  geom_point(mapping=aes(x=NumberofAttended, y=Qualifications))+ 
+  ggtitle("Plot 4") + 
+  xlab("Number of sessions attended") + ylab("Number of qualifications achieved") + 
+  theme_bw()
+plot4
+
+P4 <- cor.test(Qual1$NumberofAttended, Qual1$Qualifications, conf.level=0.95)
+P4
+
+# 5) DV: Qualifications, IV: Minutes of sessions attended 
+
+plot5 <- ggplot(Qual1) + 
+  geom_point(mapping=aes(x=Minutes, y=Qualifications))+ 
+  ggtitle("Plot 5") + 
+  xlab("Minutes of sessions attended") + ylab("Number of qualifications achieved") + 
+  theme_bw()
+plot5
+
+P5 <- cor.test(Qual1$Minutes, Qual1$Qualifications, conf.level=0.95)
+P5
+
+# 6) DV: Qualifications, IV: Number of workshops attended 
+
+plot6 <- ggplot(Qual1) + 
+  geom_point(mapping=aes(x=Outcomes, y=Qualifications))+ 
+  ggtitle("Plot 6") + 
+  xlab("Number of workshops attended") + ylab("Number of qualifications achieved") + 
+  theme_bw()
+plot6
+
+P6 <- cor.test(Qual1$Outcomes, Qual1$Qualifications, conf.level=0.95)
+P6
+
+```
+
+```{r include=FALSE}
+
+# relationship: Linear    
+
+# 1) DV: Rosenberg, IV: Number of sessions attended 
+
+library(modelr)
+options(na.action=na.warn)
+library(stats)
+library(texreg)
+
+model1 <- lm(Rosenberg_2diff ~ NumberofAttended, data = Ro1)
+summary(model1)
+
+# 2) DV: Rosenberg, IV: Minutes of sessions attended 
+
+model2 <- lm(Rosenberg_2diff ~ Minutes, data = Ro1)
+summary(model2)
+
+# 3) DV: Rosenberg, IV: Number of workshops attended 
+
+model3 <- lm(Rosenberg_2diff ~ Outcomes, data = Ro1)
+summary(model3)
+
+# 4) DV: Qualifications, IV: Number of sessions attended 
+
+model4 <- glm(Qualifications ~ NumberofAttended, data = Qual1)
+summary(model4)
+
+# 5) DV: Qualifications, IV: Minutes of sessions attended 
+
+model5 <- glm(Qualifications ~ Minutes, data = Qual1)
+summary(model5)
+
+# 6) DV: Qualifications, IV: Number of workshops attended 
+
+model6 <- glm(Qualifications ~ Outcomes, data = Qual1)
+summary(model6)
+
+screenreg(list(model1, model2, model3))
+
+screenreg(list(model4, model5, model6))
+
+
+
+```
+
+```{r echo=FALSE, comment=NA}
+
+des1
+des2
+des3
+des4
+des5
+des6
+
+plot1
+P1
+plot2
+P2
+plot3
+P3
+plot4
+P4
+plot5
+P5
+plot6
+P6
+
+screenreg(list(model1, model2, model3), )
+
+screenreg(list(model4, model5, model6))
+
+
+
+```
+
+
+
