@@ -1,0 +1,490 @@
+---
+title:
+header-includes:
+    - \usepackage{setspace}\doublespacing
+output: pdf_document
+geometry: margin=0.8in
+---
+```{r setup, include=FALSE}
+
+# Reading the data 
+
+setwd("C:/Career/UCL/2O2-PUBLG039 Agenda setting and public policy (15)/Essay")
+acts <- read.csv("acts1911-2012_websiteversion_140426.csv")
+speeches <- read.csv("speech1911-2012_websiteversion_140507.csv")
+media <- read.csv("uk_media.csv")
+
+# Cleaning the data 
+
+acts1 <- subset(acts, Major_Topic==2)
+acts2 <- subset(acts1[which(acts1$Year>1968 & acts1$Year<2009), ])
+write.csv(acts, file="acts.csv")
+
+speeches <- subset(speeches[c(1:12)])
+speeches1 <- subset(speeches, Major_Topic==2)
+speeches2 <- subset(speeches1[which(speeches1$Year>1968 & speeches1$Year<2009), ])
+write.csv(speeches, file="speeches.csv")
+
+media1 <- subset(media, majortopic==2)
+media2 <- subset(media1, year>1968)
+write.csv(media, file="media.csv")
+
+```
+
+```{r include=FALSE}
+
+# create percentage - acts 
+
+library(dplyr)
+
+actspc <- acts %>%
+  group_by(Year, Major_Topic) %>%
+  tally()
+
+actspc1 <- subset(actspc[which(actspc$Year>1968&actspc$Year<2009),])
+
+actspc2 <- actspc1 %>%
+  group_by(Year) %>%
+  tally()
+
+actspcmt <- acts2 %>%
+  group_by(Year, Major_Topic) %>%
+  tally()
+
+na <- seq(1969, 2008, 1)
+na1 <- data.frame(list(time=na))
+names(na1)[1] <- "Year"
+namerge <- merge(na1, actspcmt, all=T)
+namerge$n[which(is.na(namerge$n))] <- 0
+namerge$Major_Topic[which(is.na(namerge$Major_Topic))] <- 2
+
+write.csv(namerge, file="namerge.csv")
+
+merged_acts <- left_join(namerge, actspc2, by=c("Year"))
+names(merged_acts)[3] <- "numberActs"
+names(merged_acts)[4] <- "TotalActs"
+
+merged_acts$Proportion_Acts <- (merged_acts$numberActs / merged_acts$TotalActs) 
+
+#APCT1 <- transform(namerge, percent=ave(namerge$n, FUN=function(x) 100*c(NA, diff(x))))
+
+APPChange <- merged_acts %>% 
+      mutate(AmtChange_Acts = (numberActs - lag(numberActs)) / lag(numberActs) *100)
+APPChange <- APPChange %>% 
+      mutate(RelChange_Acts = (Proportion_Acts - lag(Proportion_Acts)) / lag(Proportion_Acts) *100)
+
+
+#mutate(diff = Adjusted - lag(Adjusted), percent_diff = diff /lag(Adjusted)
+
+       #setDT(APPChange)[, new.col := y/shift(y) - 1]
+
+
+#APPChange <- APPChange %>%
+  #mutate(AbsChange_Acts = (Proportion_Acts - lag(Proportion_Acts)))
+#APPChange <- APPChange %>%
+      #mutate(PercentPChange_Acts = ((Proportion_Acts - lag(Proportion_Acts))/Proportion_Acts) * 100)
+
+#mydata = subset(merged_acts[c(5)])
+
+```
+
+```{r include=FALSE}
+
+# create percentage - speech 
+
+library(dplyr)
+
+speechpc <- speeches %>%
+  group_by(Year, Major_Topic) %>%
+  tally()
+
+speechpc1 <- subset(speechpc[which(speechpc$Year>1968&speechpc$Year<2009),])
+
+speechpc2 <- speechpc1 %>%
+  group_by(Year) %>%
+  tally()
+
+speechpcmt <- speeches2 %>%
+  group_by(Year, Major_Topic) %>%
+  tally()
+
+na <- seq(1969, 2008, 1)
+sa1 <- data.frame(list(time=na))
+names(sa1)[1] <- "Year"
+samerge <- merge(sa1, speechpcmt, all=T)
+samerge$n[which(is.na(samerge$n))] <- 0
+samerge$Major_Topic[which(is.na(samerge$Major_Topic))] <- 2
+
+write.csv(samerge, file="samerge.csv")
+
+merged_speech <- left_join(samerge, speechpc2, by=c("Year"))
+names(merged_speech)[3] <- "numberSpeech"
+names(merged_speech)[4] <- "TotalSpeech"
+
+merged_speech$Proportion_Speech <- (merged_speech$numberSpeech / merged_speech$TotalSpeech)
+
+
+#SPCT <- transform(samerge, percent=ave(samerge$n, FUN=function(x) 100*c(NA, diff(x))))
+
+SPPChange <- merged_speech %>% 
+      mutate(AmtChange_Speech = (numberSpeech - lag(numberSpeech))/lag(numberSpeech)*100)
+SPPChange <- SPPChange %>% 
+      mutate(RelChange_Speech = (Proportion_Speech - lag(Proportion_Speech))/lag(Proportion_Speech)*100)
+
+
+#SPPChange <- SPPChange %>%
+  #mutate(Sapercent = (Proportion_Speech - lag(Proportion_Speech)))
+#SPPChange <- SPPChange %>%
+      #mutate(S7change = ((Proportion_Speech - lag(Proportion_Speech))/Proportion_Speech) *100)
+
+
+#Merging
+
+ActsSpeech <- left_join(APPChange, SPPChange, by=c("Year", "Major_Topic"))
+
+```
+
+```{r include=FALSE}
+# Creating percentage - media 
+
+mediapc <- media %>%
+  group_by(year, majortopic) %>%
+  tally()
+
+mediapc1 <- subset(mediapc, year>1968)
+
+mediapc2 <- mediapc1 %>%
+  group_by(year) %>%
+  tally()
+
+mediapcmt <- media2 %>%
+  group_by(year, majortopic) %>%
+  tally()
+
+na <- seq(1969, 2008, 1)
+ma1 <- data.frame(list(time=na))
+names(ma1)[1] <- "year"
+
+mamerge <- merge(ma1, mediapcmt, all=T)
+mamerge$n[which(is.na(mamerge$n))] <- 0
+mamerge$majortopic[which(is.na(mamerge$majortopic))] <- 2
+
+write.csv(mamerge, file="mamerge.csv")
+
+merged_media <- left_join(mamerge, mediapc2, by=c("year"))
+names(merged_media)[1] <- "Year"
+names(merged_media)[2] <- "Major_Topic"
+names(merged_media)[3] <- "numberMedia"
+names(merged_media)[4] <- "TotalMedia"
+
+merged_media$Proportion_Media <- (merged_media$numberMedia / merged_media$TotalMedia)
+
+
+#SPCT <- transform(samerge, percent=ave(samerge$n, FUN=function(x) 100*c(NA, diff(x))))
+
+MPPChange <- merged_media %>% 
+      mutate(AmtChange_Media = (numberMedia - lag(numberMedia))/lag(numberMedia)*100)
+MPPChange <- MPPChange %>% 
+      mutate(RelChange_Media = (Proportion_Media - lag(Proportion_Media))/lag(Proportion_Media)*100)
+
+
+#MPPChange <- MPPChange %>%
+  #mutate(Mapercent = (Proportion_Media - lag(Proportion_Media)))
+#MPPChange <- MPPChange %>%
+      #mutate(M7change = ((Proportion_Media - lag(Proportion_Media))/Proportion_Media) *100)
+
+#Merging
+
+ActsSpeechMedia <- left_join(ActsSpeech, MPPChange, by=c("Year", "Major_Topic"))
+
+
+```
+
+```{r include=FALSE}
+
+# Replace Inf, NaN to NA
+
+#ActsSpeechMedia$Proportion_Acts[which(is.na(ActsSpeechMedia$Proportion_Acts))] <- 0
+#ActsSpeechMedia$Proportion_Speech[which(is.na(ActsSpeechMedia$Proportion_Speech))] <- 0
+#ActsSpeechMedia$Proportion_Media[which(is.na(ActsSpeechMedia$Proportion_Media))] <- 0
+
+#ActsSpeechMedia$AmtChange_Acts[which(is.na(ActsSpeechMedia$AmtChange_Acts))] <- 0
+#ActsSpeechMedia$AmtChange_Speech[which(is.na(ActsSpeechMedia$AmtChange_Speech))] <- 0
+#ActsSpeechMedia$AmtChange_Media[which(is.na(ActsSpeechMedia$AmtChange_Media))] <- 0
+
+#ActsSpeechMedia$RelChange_Acts[which(is.na(ActsSpeechMedia$RelChange_Acts))] <- 0
+#ActsSpeechMedia$RelChange_Speech[which(is.na(ActsSpeechMedia$RelChange_Speech))] <- 0
+#ActsSpeechMedia$RelChange_Media[which(is.na(ActsSpeechMedia$RelChange_Media))] <- 0
+
+is.na(ActsSpeechMedia) <- sapply(ActsSpeechMedia, is.infinite)
+is.na(ActsSpeechMedia) <- sapply(ActsSpeechMedia, is.nan)
+
+#ActsSpeechMedia[which(is.infinite(ActsSpeechMedia))] <- NA
+#apply(ActsSpeechMedia, FUN=function(x) ifelse(is.finite(x), x, NA))
+#invisible(lapply(names(ActsSpeechMedia),function(.names) set(ActsSpeechMedia, which(is.infinite(ActsSpeechMedia[[.names]])), j = .names, value = NA)))
+#invisible(lapply(names(ActsSpeechMedia),function(.names) set(ActsSpeechMedia, which(is.nan(ActsSpeechMedia[[.names]])), j = .names, value = NA)))
+
+```
+
+```{r include=FALSE}
+
+# Summary statistics 
+ssactsspeach <- subset(ActsSpeech, select=c(numberActs, numberSpeech))
+ssALL <- subset(ActsSpeechMedia, select=c(numberActs, numberSpeech, numberMedia))
+library(stargazer)
+
+
+```
+
+```{r include=FALSE}
+
+# Visualisation 
+
+# Line Chart 
+
+library(ggplot2)
+actsgraph <- ggplot(ActsSpeechMedia, aes(Year, numberActs)) + 
+  geom_line(colour="black") + 
+  ggtitle("Acts of Parliament on Civil Rights 1969-2008") + 
+  xlab("Year") + ylab("Acts") + 
+  theme_bw() + 
+  theme(text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(1969,2008,5))
+
+actsgraph 
+
+mediagraph <- ggplot(ActsSpeechMedia, aes(Year, Proportion_Media)) + 
+  geom_line(colour="black") + 
+  ggtitle("Graph 1") + 
+  xlab("Year") + ylab("Headlines") + 
+  theme_bw() + 
+  theme(text = element_text(size=8)) + 
+  scale_x_continuous(breaks=seq(1969,2008,5),
+                     limits=c(1969, 2008))
+
+mediagraph
+
+speechgraph <- ggplot(ActsSpeechMedia, aes(Year,numberSpeech)) + 
+  geom_line(colour="black") + 
+  ggtitle("The Speeches from the Throne on Civil Rights 1969-2008") + 
+  xlab("Year") + ylab("Mentions") + 
+  theme_bw() + 
+  theme(text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(1969,2008,5),
+                     limits=c(1969, 2008))
+
+speechgraph 
+
+#Linegraph <- ggplot(ActsSpeechMedia, aes(Year)) + 
+  #geom_line(aes(y=numberActs, colour="number of Acts")) +
+  #geom_line(aes(y=numberSpeech, colour="number of Mentions")) + 
+  #geom_line(aes(y=numberMedia, colour="number of Headlines")) +
+  #ggtitle("Graph 1") + 
+  #xlab("Year") + ylab("Acts, Headlines, Mentions") + 
+  #theme_gray() + 
+  #theme(legend.position="bottom", legend.title=element_blank()) + 
+  #scale_x_continuous(breaks=seq(1969, 2008, 2))
+
+#Linegraph
+
+#data=ActsSpeechMedia[!is.na(ActsSpeechMedia$numberActs),], 
+
+pcgraph2 <- ggplot(ActsSpeechMedia, aes(Year)) + 
+  geom_line(aes(y = Proportion_Acts, colour="Proportion of Acts")) + 
+  geom_line(aes(y = Proportion_Speech, colour="Proportion of Speech")) + 
+  geom_line(aes(y = Proportion_Media, colour="Proportion of Media")) + 
+  ggtitle("Graph 2") + 
+  xlab("Year") + ylab("Proportion") + 
+  theme_bw() + 
+  theme(text = element_text(size=8)) +
+  theme(legend.position="bottom", legend.title=element_blank()) + 
+  scale_x_continuous(breaks=seq(1969,2008,5), 
+                     limits=c(1969, 2008))+
+  scale_y_continuous(breaks=seq(0, 0.15, 0.05), 
+                     limits=c(0, 0.15))
+
+pcgraph2 
+
+pcgraph1 <- ggplot(ActsSpeechMedia, aes(Year)) + 
+  geom_line(aes(y = Proportion_Speech, colour = "Proportion_Speech")) + 
+  geom_line(aes(y = Proportion_Acts, colour = "Proportion_Acts")) + 
+  ggtitle("Graph 1") + 
+  xlab("Year") + ylab("Proportion") + 
+  theme_bw() + 
+  theme(text = element_text(size=8)) +
+  theme(legend.position="bottom", legend.title=element_blank()) +
+  scale_x_continuous(breaks=seq(1969,2008,5), 
+                     limits=c(1969, 2008))+
+  scale_y_continuous(breaks=seq(0, 0.2, 0.02), 
+                     limits=c(0, 0.2))
+
+
+pcgraph1  
+
+
+#mediagraph <- ggplot(ActsSpeechMedia, aes(Year)) + 
+  #geom_line(aes(y = Proportion_Media, colour="Proportion_Media"))+
+  #ggtitle("Graph 2") + 
+  #xlab("Year") + ylab("Proportion") +
+  #theme_gray()+
+  #theme(legend.position="bottom", legend.title=element_blank())+
+  #scale_x_continuous(breaks=seq(1969, 2008, 2))+
+  #scale_y_continuous(breaks=seq(0, 0.02, 0.005), 
+                     #limits=c(0, 0.02))
+
+#mediagraph
+
+```
+
+```{r include=FALSE}
+
+# frequency distribution bar 
+
+
+freqbar1 <- ggplot(ActsSpeechMedia, aes(x=round(RelChange_Acts))) + 
+  geom_bar(na.rm=TRUE, position="identity", width=5) +
+  ggtitle("Figure 1")+ 
+  theme(text = element_text(size=8)) +
+  scale_x_continuous(name="Percent Change", 
+                     breaks=seq(-100,300,100), 
+                     limits=c(-100,300))+
+  scale_y_continuous(name="Frequency", 
+                     breaks=seq(0,3,1), 
+                     limits=c(0,3))+ 
+  theme_bw() 
+
+#freqbar1
+
+freqbar2 <- ggplot(ActsSpeechMedia, aes(x=round(RelChange_Speech))) + 
+  geom_bar(na.rm=TRUE, position="identity", width=5) +
+  ggtitle("Figure 2")+ 
+  theme(text = element_text(size=8)) +
+  scale_x_continuous(name="Percent Change", 
+                     breaks=seq(-100,300,100), 
+                     limits=c(-100,300))+
+  scale_y_continuous(name="Frequency", 
+                     breaks=seq(0,3,1), 
+                     limits=c(0,3))+ 
+  theme_bw() 
+
+#freqbar2
+
+freqhist <- ggplot(ActsSpeechMedia) + 
+  geom_histogram(aes(y=..count.., x=round(RelChange_Acts)), binwidth=10, na.rm=TRUE, position="identity") +
+  ggtitle("Figure 1") +
+  theme(text = element_text(size=8)) +
+   scale_x_continuous(name = "Percentage Change", 
+                      breaks=seq(-100, 300, 100), 
+                      limits=c(-100,300)) +
+  scale_y_continuous(name = "Frequency",
+                      breaks=seq(0, 5, 1), 
+                      limits=c(0, 5)) + 
+  theme_bw()
+
+#freqhist
+
+freqhist1 <-ggplot(ActsSpeechMedia) + 
+  geom_histogram(aes(y=..count.., x=round(RelChange_Speech)), binwidth=10, na.rm=TRUE, position="identity") +
+  ggtitle("Figure 2") +
+  theme(text = element_text(size=8)) +
+   scale_x_continuous(name = "Percentage Change", 
+                      breaks=seq(-100, 300, 100), 
+                      limits=c(-100,300)) +
+  scale_y_continuous(name = "Frequency",
+                      breaks=seq(0, 5, 1), 
+                      limits=c(0, 5)) + 
+  theme_bw()
+
+#freqhist1
+
+
+
+#a <- ggplot(ActsSpeechMedia, aes(x =RelChange_Acts), show.legend=TRUE) + 
+  #geom_segment(aes(xend=x, yend=0), size=10) 
+  
+#a  
+
+
+# Skewness 
+
+# Kurtosis scores 
+
+k1 <- ActsSpeechMedia[7]
+k2 <- ActsSpeechMedia[12]
+k3 <- ActsSpeechMedia[17]
+k <- subset(ActsSpeechMedia[c(7,12,17)])
+colnames(k) <- c("Acts", "Mentions", "Headlines")
+
+library(moments)
+#a<- kurtosis(k1, na.rm=TRUE)
+#b<- kurtosis(k2, na.rm=TRUE)
+#c<- kurtosis(k3, na.rm=TRUE)
+d <- kurtosis(k, na.rm=TRUE)
+d
+rownames(d) <-NULL
+
+
+#library(stargazer)
+#stargazer(d, type="text", title="Table 2")
+
+```
+
+```{r include=FALSE}
+
+# Figure 1 scatter plot of civil rights topic in Acts of Parliament 
+
+par(mfrow=c(1,1))
+
+#library(bcp)
+#boxplot <- subset(ActsSpeech[c(3:5)])
+
+#speechFA <- plot(ActsSpeechMedia$Year, ActsSpeech$Proportion_Speech, xlab="Year", ylab="Proportion of civil rights in Speeches", ylim=c(0, 0.08), main="Figure 2", col="red")
+
+#bothFA <- ggplot(ActsSpeechMedia, aes(Year)) + 
+  #geom_point(aes(y=Proportion_Acts), colour="blue") + 
+  #geom_point(aes(y=Proportion_Speech), colour="red") +
+  #ggtitle("Figure 1") + 
+  #xlab("Year") + ylab("Percentage") + 
+  #theme_gray() + 
+  #theme(legend.position="bottom", legend.title=element_blank()) +
+  #scale_x_continuous(breaks=seq(1969,2008,2))
+
+#bothFA
+
+#actsFA <- plot(ActsSpeech$Year, ActsSpeech$Proportion_Acts, xlab="Year", ylab="Proportion of civil rights in Acts", ylim=c(0, 0.08), main="Figure 1", col="blue")
+
+actsgFA <- ggplot(ActsSpeechMedia, aes(Year)) + 
+  geom_point(aes(y=Proportion_Acts), colour="black") + 
+  ggtitle("Figure 1") + 
+  xlab("Year") + ylab("Proportion of civil rights in Acts") + 
+  theme_gray() + 
+  theme(legend.position="bottom", legend.title=element_blank()) +
+  scale_x_continuous(breaks=seq(1969,2008,1)) + 
+  scale_y_continuous(breaks=seq(0,0.2, 0.02), 
+                     limits=c(0, 0.2))
+actsgFA
+
+```
+
+```{r include=FALSE}
+
+# 5 Correspondance Pearson's R 
+
+x <- data.frame(x1=ActsSpeechMedia[5],
+                x2=ActsSpeechMedia[10],
+                x3=ActsSpeechMedia[15])
+
+xc <- cor(x, method='pearson')
+colnames(xc) <- c("Proportion of Acts", "Proportion of Mentions", "Proportion of Headlines")
+rownames(xc) <- c("Proportion of Acts", "Proportion of Mentions", "Proportion of Headlines")
+#library(stargazer)
+#t3<- stargazer(xc, title="Table 3", type="text", header=FALSE)
+
+#library(reshape2)
+
+#corbox <- ggplot(data=melt(x), aes(x=variable, y=value)) + 
+  #geom_boxplot(aes(fill=variable))
+
+#corbox
+
+```
