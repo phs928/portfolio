@@ -196,3 +196,29 @@ print(score_dataset(imputed_X_train_plus, imputed_X_test_plus, y_train, y_test))
 
 ## 2) categorical variable 
 
+# without encoding categorical variables, an error occurs 
+# how to encode categorical variables 
+
+# one hot encoding 
+
+import pandas as pd 
+
+train_data = pd.read_csv('iowa_train.csv')
+
+test_data = pd.read_csv('iowa_test.csv')
+
+train_data.describe()
+
+# drop houses where the target is missing 
+
+train_data.dropna(axis = 0, subset = ['SalePrice'], inplace = True)
+
+target = train_data.SalePrice
+
+cols_with_missing = [col for col in train_data.columns 
+if train_data[col].isnull().any()]
+
+train_predictors = train_data.drop(['Id', 'SalePrice'] + cols_with_missing, axis = 1) 
+
+test_predictors = test_data.drop(['Id'] + cols_with_missing, axis = 1)
+
