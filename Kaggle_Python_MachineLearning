@@ -222,3 +222,49 @@ train_predictors = train_data.drop(['Id', 'SalePrice'] + cols_with_missing, axis
 
 test_predictors = test_data.drop(['Id'] + cols_with_missing, axis = 1)
 
+# select categorical columns 
+
+low_cardinality_cols = [cname for cname in train_predictors.columns if 
+                                train_predictors[cname].nunique() < 10 and
+                                train_predictors[cname].dtype == "object"]
+
+num_cols = [cname for cname in train_predictors.columns 
+if train_predictors[cname].dtype in ['int64', 'float64']]
+
+my_cols = low_cardinality_cols + num_cols 
+
+train_predictors = train_predictors[my_cols]
+
+test_predictors = test_predictors[my_cols]
+
+train_predictors.dtypes.sample(10)
+
+# Object indicates a column has text 
+# pandas offers a function called get_dummies to get one hot encodings 
+
+one_hot_encoded_training_predcitors = pd.get_dummies(train_predictors)
+
+# drop categorical variables 
+
+# compare these 2 approaches using MAE: dropping categorical / one hot encoded categorical 
+
+from sklearn.model_selection import cross_val_score
+
+from sklearn.ensemble import RandomForestRegressor
+
+def get_mae(X, y): 
+      return -1 * cross_val_score(RandomForestRegressor(50), 
+      X, y, 
+      scoring = 'neg_mean_absolute_error').mean() 
+      # multiply by -1 to cross validation score to make positive MAE score 
+
+predictors_wo_categoricals = train_predictors.select_dtypes(exclude = ['object'])
+
+mae_wo_categoricals = get_mae(predictors_wo_categoricals, target)
+
+mae_one_hot_encoded = get_mae(one_hot_encoded_training_predcitors, target)
+
+
+print('Mean Absolute Error when Dropping Categoricals: ' + str(int(mae_wo_categoricals)))
+print('Mean Abslute Error with One-Hot Encoding: ' + str(int(mae_one_hot_encoded)))
+
