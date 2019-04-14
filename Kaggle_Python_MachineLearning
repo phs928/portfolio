@@ -1,4 +1,7 @@
-### level 1
+### <level 1>
+
+## machine learning 
+
 # Code you have previously used to load data
 
 import pandas as pd
@@ -103,9 +106,9 @@ output = pd.DataFrame({'Id': test_data.Id, 'SalePrice': test_preds})
 
 output.to_csv('submission.csv', index=False)
 
-### level 2 
+### <level 2> 
 
-## handling missing values 
+## 1) handling missing values 
 
 # solution 1 - dropping columns with missing values 
 
@@ -189,4 +192,7 @@ imputed_X_test_plus = my_imputer.fit_transform(imputed_X_test_plus)
 
 print("Mean Absolute Error from Imputation while Track What Was Imputed:")
 print(score_dataset(imputed_X_train_plus, imputed_X_test_plus, y_train, y_test))
+
+
+## 2) categorical variable 
 
