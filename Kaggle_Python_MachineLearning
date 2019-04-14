@@ -268,3 +268,14 @@ mae_one_hot_encoded = get_mae(one_hot_encoded_training_predcitors, target)
 print('Mean Absolute Error when Dropping Categoricals: ' + str(int(mae_wo_categoricals)))
 print('Mean Abslute Error with One-Hot Encoding: ' + str(int(mae_one_hot_encoded)))
 
+# applying to multiple files; make sure to align with test predictors 
+# align makes sure columns show up in the same order  
+# 
+
+one_hot_encoded_training_predcitors = pd.get_dummies(train_predictors)
+
+one_hot_encoded_test_predictors = pd.get_dummies(test_predictors)
+
+final_train, final_test = one_hot_encoded_training_predcitors.align(one_hot_encoded_test_predictors, 
+join = 'left', axis = 1)
+
