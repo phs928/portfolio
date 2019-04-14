@@ -166,3 +166,27 @@ print(score_dataset(imputed_X_train, imputed_X_test, y_train, y_test))
 
 ## solution 3 - extension to imputation: 
 
+# make a copy of original 
+
+imputed_X_train_plus = X_train.copy()
+
+imputed_X_test_plus = X_test.copy()
+
+cols_with_missing = [col for col in X_train.columns
+if X_train[col].isnull().any()]
+
+for col in cols_with_missing: 
+    imputed_X_train_plus[col + '_was missing'] = imputed_X_train_plus[col].isnull()
+    imputed_X_test_plus[col + '_was missing'] = imputed_X_test_plus[col].isnull() 
+
+# imputation
+
+my_imputer = SimpleImputer() 
+
+imputed_X_train_plus = my_imputer.fit_transform(imputed_X_train_plus) 
+
+imputed_X_test_plus = my_imputer.fit_transform(imputed_X_test_plus)
+
+print("Mean Absolute Error from Imputation while Track What Was Imputed:")
+print(score_dataset(imputed_X_train_plus, imputed_X_test_plus, y_train, y_test))
+
