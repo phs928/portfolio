@@ -270,7 +270,6 @@ print('Mean Abslute Error with One-Hot Encoding: ' + str(int(mae_one_hot_encoded
 
 # applying to multiple files; make sure to align with test predictors 
 # align makes sure columns show up in the same order  
-# 
 
 one_hot_encoded_training_predcitors = pd.get_dummies(train_predictors)
 
@@ -278,4 +277,46 @@ one_hot_encoded_test_predictors = pd.get_dummies(test_predictors)
 
 final_train, final_test = one_hot_encoded_training_predcitors.align(one_hot_encoded_test_predictors, 
 join = 'left', axis = 1)
+
+
+## 3) XG Boost : an implementation of the gradient boosted decision trees algorithm 
+## cycles, that repeatedly builds new models and combines them into new ensemble model / 
+## we start the cycle by calculating the errors for each observation in the dataset, then build  a new model to predict those, 
+## add predictions from error-predicting model to 'ensemble of models' 
+# To make a prediction, we add the predictions from all previous models. 
+# We can use these predictions to calculate new errors, build the next model, 
+# and add it to the ensemble. 
+
+import pandas as pd 
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import Imputer 
+
+data = pd.read_csv('boost_train.csv')
+
+data.describe()
+
+data.dropna(axis = 0, subset = ['SalePrice'], inplace = True)
+
+y = data.SalePrice
+
+X = data.drop(['SalePrice'], axis = 1).select_dtypes(exclude = ['object'])
+
+train_X, test_X, train_y, test_y = train_test_split(X.as_matrix(), y.as_matrix(), test_size = 0.25)
+
+my_imputer = Imputer()
+
+train_X = my_imputer.fit_transform(train_X)
+
+test_X = my_imputer.fit_transform(test_X)
+
+# building a model 
+
+from xgboost import XGBRegressor 
+
+my_model = XGBRegressor()
+
+# add silent = true to avoid printing out updates with each cycle 
+
+my_model.fit(train_X, train_y, verbose = False)
+
 
