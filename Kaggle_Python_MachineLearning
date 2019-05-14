@@ -156,9 +156,9 @@ print(score_dataset(reduced_X_train, reduced_X_test, y_train, y_test))
 
 ## solution 2 - imputation 
 
-from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import Imputer 
 
-my_imputer = SimpleImputer() 
+my_imputer = Imputer() 
 
 imputed_X_train = my_imputer.fit_transform(X_train)
 
@@ -184,7 +184,7 @@ for col in cols_with_missing:
 
 # imputation
 
-my_imputer = SimpleImputer() 
+my_imputer = Imputer() 
 
 imputed_X_train_plus = my_imputer.fit_transform(imputed_X_train_plus) 
 
@@ -291,7 +291,7 @@ data = pd.read_csv('melb_data.csv')
 # select subset of predictors 
 
 cols_to_use = ['Rooms', 'Distance', 'Landsize', 'BuildingArea', 'YearBuilt']
-X = date[cols_to_use]
+X = data[cols_to_use]
 
 # select target 
 
@@ -302,21 +302,66 @@ y = data.Price
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import Pipeline 
-from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import Imputer
+
+# n_estimators : set the number of trees in the RF model 
+# random_state : reproducibility 
+
+my_pipeline = Pipeline(steps=[('preprocessor', Imputer()),
+                              ('model', RandomForestRegressor(n_estimators=50,
+                                                              random_state=0))
+                             ])
+
+# We obtain the cross-validation scores with the cross_val_score() function from scikit-learn. 
+# We set the number of folds with the cv parameter.
+
+from sklearn.model_selection import cross_val_score 
+
+# multiply by -1 since sklearn calculates negative MAE 
+# CV = 5: number of folds 
+
+scores = -1 * cross_val_score(my_pipeline, X, y, cv = 5, scoring = 'neg_mean_absolute_error')
+
+print("MAE scores :\n", scores)
+
+# take the average across experiments 
+
+print("Average MAE score (across experiments): ") 
+print(scores.mean())
 
 
+# exercise: write a function 
 
+def get_score(n_estimators): 
+      my_pipeline = Pipeline(steps = [
+            ('preprocessor', Imputer()), 
+            ('model', RandomForestRegressor(n_estimators, random_state = 0))
+      ])
+      scores = -1 * cross_val_score(my_pipeline, 
+      X, y, cv = 3, 
+      scoring = 'neg_mean_absolute_error')
+      return scores.mean 
 
+# exercise 2 : experiment different parameter values from 50, 150, 200 ... 400 
 
+results = {}
+for i in range(1,9): 
+      results[50*i] = get_score(50*i) 
 
+# exercise 3 : visualise the best parameter      
 
+import matplotlib.pyplot as plt 
 
+# matplotlib inline
 
+plt.plot(results.keys(), results.values())
+plt.show()
 
+# from the plot what is the best parameter?
 
+n_estimators_best = min(results, key = results.get)
 
-
-
+print(n_estimators_best)
 
 
 ## 4) XG Boost : an implementation of the gradient boosted decision trees algorithm 
@@ -352,6 +397,8 @@ test_X = my_imputer.fit_transform(test_X)
 # building a model 
 
 import xgboost as xgb
+
+from xgboost import XGBRegressor
 
 #from xgboost import XGBRegressor
 
