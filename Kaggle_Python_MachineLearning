@@ -279,7 +279,47 @@ final_train, final_test = one_hot_encoded_training_predcitors.align(one_hot_enco
 join = 'left', axis = 1)
 
 
-## 3) XG Boost : an implementation of the gradient boosted decision trees algorithm 
+## 3) cross-validation: 
+## the larger the validation set, the less randomness there is in measure of model quality. 
+## cross validation : run modeling process on different subsets of data to get multiple measures of model quality 
+## for smaller datasets cross validation should be run; for larger datasets a single validation set is sufficient.
+
+import pandas as pd 
+
+data = pd.read_csv('melb_data.csv')
+
+# select subset of predictors 
+
+cols_to_use = ['Rooms', 'Distance', 'Landsize', 'BuildingArea', 'YearBuilt']
+X = date[cols_to_use]
+
+# select target 
+
+y = data.Price
+
+# define pipeline that uses imputer to fill in missing values 
+# random forest to make predictions 
+
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline 
+from sklearn.impute import SimpleImputer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 4) XG Boost : an implementation of the gradient boosted decision trees algorithm 
 ## cycles, that repeatedly builds new models and combines them into new ensemble model / 
 ## we start the cycle by calculating the errors for each observation in the dataset, then build  a new model to predict those, 
 ## add predictions from error-predicting model to 'ensemble of models' 
@@ -311,7 +351,9 @@ test_X = my_imputer.fit_transform(test_X)
 
 # building a model 
 
-from xgboost import XGBRegressor 
+import xgboost as xgb
+
+#from xgboost import XGBRegressor
 
 my_model = XGBRegressor()
 
