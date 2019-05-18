@@ -279,7 +279,45 @@ final_train, final_test = one_hot_encoded_training_predcitors.align(one_hot_enco
 join = 'left', axis = 1)
 
 
-## 3) cross-validation: 
+## 3) pipelines 
+## the way to keep data preprocessing and modeling code organised. 
+## benefits: cleaner code / fewer bugs / easier to productionalise / more options for model validation 
+
+import pandas as pd 
+from sklearn.model_selection import train_test_split 
+
+pipe_data = pd.read_csv('melb_data.csv')
+
+y = pipe_data.Price 
+X = pipe_data.drop(['Price'], axis = 1 )
+
+X_train_full, X_valid_full, y_train, y_valid = train_test_split(X, y, train_size = 0.8, test_size = 0.2, random_state = 0)
+
+# Cardinality : meaning the number of unique values in a column 
+# select categorical columns with relatively low cardinality 
+
+categorical_cols = [cname for cname in X_train_full.columns if X_train_full[cname].nunique() < 10 and X_train_full[cname].dtype == 'object']
+
+# select numerical columns 
+
+numerical_cols = [cname for cname in X_train_full.columns if X_train_full[cname].dtype in ['int64', 'float64']]
+
+# keep selected columns only 
+
+my_cols = categorical_cols + numerical_cols
+X_train = X_train_full[my_cols].copy() 
+X_valid = X_valid_full[my_cols].copy()
+
+X_train.head()
+
+## constructing pipelines in 3 steps 
+# step 1: define preprocessing steps 
+
+from future_encoders import ColumnTransformer 
+
+
+
+## 4) cross-validation: 
 ## the larger the validation set, the less randomness there is in measure of model quality. 
 ## cross validation : run modeling process on different subsets of data to get multiple measures of model quality 
 ## for smaller datasets cross validation should be run; for larger datasets a single validation set is sufficient.
@@ -364,7 +402,9 @@ n_estimators_best = min(results, key = results.get)
 print(n_estimators_best)
 
 
-## 4) XG Boost : an implementation of the gradient boosted decision trees algorithm 
+
+
+## 6) XG Boost : an implementation of the gradient boosted decision trees algorithm 
 ## cycles, that repeatedly builds new models and combines them into new ensemble model / 
 ## we start the cycle by calculating the errors for each observation in the dataset, then build  a new model to predict those, 
 ## add predictions from error-predicting model to 'ensemble of models' 
