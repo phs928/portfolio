@@ -1,0 +1,988 @@
+---
+title: 
+author: 
+date: 
+output: pdf_document
+---
+
+```{r include=FALSE}
+
+setwd("C:/Career/UCL/presen")
+
+require(quanteda)
+#devtools::install_github("kbenoit/readtext")
+require(readtext)
+texts <- readtext("UN_debates/*.txt",
+                  docvarsfrom = "filenames", 
+                  dvsep="_",   
+                  docvarnames=c("Country", "Session", "Year"))
+
+debates.corpus <- corpus(texts, notes="UNGA General Debate 1970-2014")
+
+# creating a dictionary related with trade
+myDict <- dictionary(list(trade = c("trade", "economic", "economy", "development")))
+
+byTrade <- dfm(debates.corpus,   
+                  ignoredFeatures = c(stopwords("english"), "will", "the", "a", "an"), 
+                  stem=FALSE,
+                  language="english", dictionary=myDict)
+
+#save(byTrade, file="byTrade.Rdata")
+
+#Creating reduced dtm
+#reduced.trade <- trim(byTrade, minCount=20, minDoc=10)
+
+#Creating a data frame from reduced DTM and adding Country (ISO) and Year variables
+df.trade <- as.data.frame(byTrade)
+df.trade$Year <- as.numeric(docvars(debates.corpus, field="Year"))
+df.trade$Country <- docvars(debates.corpus, field="Country")
+#write.csv(df.trade, file="df_trade.csv")
+
+```
+
+
+```{r include=FALSE}
+# Loading income inequality control 
+
+conde <- read.csv(file="conde_Data.csv", stringsAsFactors = FALSE)
+names(conde)
+names(conde)[5] <- "GDPpc"
+names(conde)[6] <- "GDPpcGrowth"
+names(conde)[7] <- "Pop"
+names(conde)[8] <- "PopGrowth"
+names(conde)[9] <- "Unem"
+names(conde)[10] <- "Trade"
+names(conde)[11] <- "Tax"
+
+# other income inequality indicators 
+
+names(conde)[12] <- "GINI"
+names(conde)[13] <- "Poverty"
+names(conde)[14] <- "IncomeHigh20"
+names(conde)[15] <- "IncomeThird20"
+names(conde)[16] <- "IncomeFourth20"
+names(conde)[17] <- "IncomeLow20"
+
+condecut <-conde[, 5:17]
+condecut[, 1:13] <- sapply(condecut[, 1:13], as.numeric)
+
+# transforming population, GDP pc 
+condecut$Pop <- log(condecut$Pop)
+condecut$GDPpc <- log(condecut$GDPpc)
+condecut$Tax <- log(condecut$Tax)
+names(condecut)[3] <- "Log_Pop"
+names(condecut)[1] <- "Log_GDPpc"
+names(condecut)[7] <- "Log_Tax"
+names(condecut)
+
+#write.csv(condecut, file="condecut.csv")
+
+```
+
+```{r include=FALSE}
+# Hmisc imputation
+library(Hmisc)
+
+ConDeImp <- aregImpute(~ GINI + Poverty + IncomeHigh20 + IncomeThird20 + IncomeFourth20 + IncomeLow20 + Log_Tax + Trade + Unem + PopGrowth + Log_Pop + GDPpcGrowth + Log_GDPpc, data = condecut, n.impute = 5)
+
+completeData <- impute.transcan(ConDeImp, imputation=1, data=condecut, list.out=TRUE,pr=FALSE, check=FALSE)
+
+AB <-cbind.data.frame(completeData)
+
+AB$Year <- conde$Time
+AB$Country <- conde$Country.Code
+
+#write.csv(AB, file="AB.csv")
+
+```
+
+```{r include=FALSE}
+# Merging with topic models 
+library(dplyr)
+
+combined <- inner_join(df.trade, AB, by=c("Country", "Year"))
+write.csv(combined, file="combined.csv")
+
+# data subsetting
+
+data1 <- subset(combined, Year > 1994)
+write.csv(data1, file="data1.csv")
+
+data1$IncomeShare <- (data1$IncomeHigh20)  - (data1$IncomeThird20+data1$IncomeFourth20+data1$IncomeLow20)
+
+StatData <- subset(data1[c(1, 4:17)])
+#StatData <- lapply(StatData, as.numeric)
+StatDF <- subset(data1[c(1:3)])
+#StatDF <- lapply(StatDF, as.numeric)
+StatGINI <- subset(data1[c(1, 4, 10:16)])
+#StatGINI <- lapply(StatGINI, as.numeric)
+StatPov <- subset(data1[c(1,5, 10:16)])
+#StatPov <- lapply(StatPov, as.numeric)
+StatShare <- subset(data1[c(1, 10:17)])
+#StatShare <- lapply(StatShare, as.numeric)
+
+write.csv(StatData, file="StatData.csv")
+write.csv(StatGINI, file="StatGINI.csv")
+write.csv(StatPov, file="StatPov.csv")
+write.csv(StatShare, file="StatShare.csv")
+```
+
+
+```{r include=FALSE}
+# statistical analysis - Poverty ratio =dependent 
+
+set.seed(11)
+N=dim(StatPov)[1]
+train <-  sample(N, 0.8*N)
+test <-  -train
+TrainData <- StatPov[train, ]
+TestData <- StatPov[test, ]
+
+# Forward
+library(ISLR)
+library(leaps)
+reg.fit <- regsubsets(Poverty~., data=TrainData, nvmax=8, method="forward")
+#reg.summary <- summary(reg.fit)
+#par(mfrow=c(1, 3))
+#plot(reg.summary$cp,xlab="Number of Variables",ylab="Cp",type='l')
+#min.cp <-  min(reg.summary$cp)
+#std.cp <-  sd(reg.summary$cp)
+#abline(h=min.cp+0.2*std.cp, col="red", lty=2)
+#abline(h=min.cp-0.2*std.cp, col="red", lty=2)
+#plot(reg.summary$bic,xlab="Number of Variables",ylab="BIC",type='l')
+#min.bic <-  min(reg.summary$bic)
+#std.bic <-  sd(reg.summary$bic)
+#abline(h=min.bic+0.2*std.bic, col="red", lty=2)
+#abline(h=min.bic-0.2*std.bic, col="red", lty=2)
+#plot(reg.summary$adjr2,xlab="Number of Variables",
+     #ylab="Adjusted R2",type='l', ylim=c(0.0, 0.1))
+#max.adjr2 <-  max(reg.summary$adjr2)
+#std.adjr2 <-  sd(reg.summary$adjr2)
+#abline(h=max.adjr2+0.2*std.adjr2, col="red", lty=2)
+#abline(h=max.adjr2-0.2*std.adjr2, col="red", lty=2)
+
+
+# Linear 
+
+lm.fit <- lm(Poverty~ ., data=TrainData)
+#summary(lm.fit)
+lm.pred <-  predict(lm.fit, TestData)
+lm.rss <-  mean((TestData$Poverty - lm.pred)^2)
+lm.rss
+lm.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+lm.tss
+lm.r2 <-  1 - lm.rss / lm.tss
+lm.r2
+
+# GAM (2 predictors)
+
+library(gam)
+
+set.seed(11)
+reg.fit2 <-  regsubsets(Poverty ~ . , data=StatPov, method="forward")
+#coefi <-  coef(reg.fit2, id=2)
+#names(coefi)
+
+gam.fit <-  gam(Poverty ~  s(PopGrowth, df=2) + s(Log_GDPpc, df=2),  data=TrainData)
+#par(mfrow=c(1,2))
+#plot(gam.fit, se=TRUE, col="blue")
+
+
+gam.pred <-  predict(gam.fit, TestData)
+gam.rss <-  mean((TestData$Poverty - gam.pred)^2)
+gam.rss
+gam.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+gam.r2 <-  1 - gam.rss / gam.tss
+gam.r2
+#summary(gam.fit)
+
+```
+
+```{r include=FALSE}
+# Ridge 
+
+library(ISLR)
+library(glmnet)
+set.seed(11)
+
+train.mat <-  model.matrix(Poverty ~ . , data = TrainData)
+test.mat <-  model.matrix(Poverty ~ . , data = TestData)
+
+grid <-  10 ^ seq(4, -2, length = 100)
+
+mod.ridge <-  cv.glmnet(train.mat, TrainData[, "Poverty"], alpha = 0, lambda = grid, thresh = 1e-12)
+
+lambda.best.ridge <-  mod.ridge$lambda.min
+lambda.best.ridge
+
+ridge.pred <-  predict(mod.ridge, newx = test.mat, s = lambda.best.ridge)
+ridge.rss <- mean((TestData[, "Poverty"] - ridge.pred)^2)
+ridge.rss
+ridge.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+ridge.r2 <-  1 - ridge.rss / ridge.tss
+ridge.r2
+
+predict(mod.ridge,type="coefficients",s=lambda.best.ridge)
+
+# Lasso
+
+set.seed(11)
+
+mod.lasso <-  cv.glmnet(train.mat, TrainData[, "Poverty"], 
+                        alpha = 1, lambda = grid, thresh = 1e-12)
+
+lambda.best.lasso <-  mod.lasso$lambda.min
+lambda.best.lasso
+
+lasso.pred <-  predict(mod.lasso, newx = test.mat, s = lambda.best.lasso)
+
+lasso.rss <-  mean((TestData$Poverty - lasso.pred)^2)
+lasso.rss
+lasso.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+lasso.r2 <-  1 - lasso.rss / lasso.tss
+lasso.r2
+
+predict(mod.lasso, type="coefficients", s=lambda.best.lasso)
+
+set.seed(11)
+
+#all.mat <-  model.matrix(Poverty~ . , data = StatPov)
+
+#mod.lasso <-  glmnet(all.mat, StatPov[, "Poverty"], alpha = 1)
+
+#predict(mod.lasso, s = lambda.best.lasso, type = "coefficients")
+
+# PCR
+
+library(pls)
+set.seed(11)
+
+pcr.fit <-  pcr(Poverty ~ . , data = TrainData, scale = TRUE, validation = "CV")
+
+#par(mfrow=c(1, 1))
+#validationplot(pcr.fit, val.type="MSEP")
+
+pcr.pred <-  predict(pcr.fit, TestData, ncomp=6)
+pcr.rss <- mean((TestData[, "Poverty"] - data.frame(pcr.pred))^2) 
+pcr.rss
+pcr.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+pcr.r2 <-  1 - pcr.rss / pcr.tss
+pcr.r2
+
+#summary(pcr.fit)
+
+# PLS
+
+set.seed(11)
+pls.fit <-  plsr(Poverty ~ . , data = TrainData, scale = TRUE, validation = "CV")
+
+#par(mfrow=c(1, 1))
+#validationplot(pls.fit, val.type="MSEP")
+
+pls.pred <-  predict(pls.fit, TestData, ncomp=2)
+pls.rss <- mean((TestData[, "Poverty"] - data.frame(pls.pred))^2) 
+pls.rss
+pls.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+pls.r2 <-  1 - pls.rss / pls.tss
+pls.r2
+
+#summary(pls.fit)
+```
+
+```{r include=FALSE}
+# Boosting
+library(gbm)
+set.seed(11)
+
+pows <-  seq(-10, 0.2, by=0.1)
+lambdas <-  10 ^ pows
+
+length.lambdas <-  length(lambdas)
+TrainErrors <-  rep(NA, length.lambdas)
+TestErrors <-  rep(NA, length.lambdas)
+
+for (i in 1:length.lambdas) {
+  boost.Fit <-  gbm(Poverty ~ ., data=TrainData,
+                        distribution="gaussian",
+                        n.trees=1000,
+                        shrinkage=lambdas[i])
+  train.pred <-  predict(boost.Fit, TrainData, n.trees=1000)
+  test.pred <-  predict(boost.Fit, TestData, n.trees=1000)
+  TrainErrors[i] <-  mean((TrainData$Poverty - train.pred)^2)
+  TestErrors[i] <-  mean((TestData$Poverty - test.pred)^2)
+}
+
+plot(lambdas, TrainErrors, type="b", xlab="Shrinkage", ylab="Train MSE", ylim=c(0, 150), col="blue", pch=20)
+
+min(TestErrors)
+lambdas[which.min(TestErrors)]
+
+boost.best <-  gbm(Poverty ~ .,data=TrainData,
+                   distribution="gaussian", n.trees=1000,
+                   shrinkage=lambdas[which.min(TestErrors)])
+#summary(boost.best)
+
+boost.pred <-  predict(boost.best, TestData, n.trees=1000)
+boost.rss <-  mean((TestData$Poverty - boost.pred)^2)
+boost.rss
+boost.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+boost.r2 <-  1 - boost.rss / boost.tss
+boost.r2
+boostFit <- gbm(as.factor(Poverty) ~ trade + 
+                        Log_GDPpc + 
+                        GDPpcGrowth +
+                        Log_Pop +
+                        PopGrowth +
+                        Unem +
+                        Trade +
+                        Log_Tax, 
+                      data=TrainData, distribution="gaussian", n.trees=1000, shrinkage=lambdas[which.min(TestErrors)])
+
+summary(boostFit)
+
+# Bagging
+
+library(randomForest)
+set.seed(11)
+
+bag.Fit <-  randomForest(Poverty ~ ., data=TrainData, 
+                            ntree=1000, mtry=8, importance=TRUE)
+bag.pred <-  predict(bag.Fit, TestData)
+bag.rss <-  mean((TestData$Poverty - bag.pred)^2)
+bag.rss
+bag.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+bag.r2 <-  1 - bag.rss / bag.tss
+bag.r2
+
+#varImpPlot(bag.Fit)
+
+# Random Forest
+
+library(randomForest)
+
+set.seed(11)
+rf <-  randomForest(Poverty ~ ., data=TrainData, n.trees=1000, importance=TRUE)
+#rf
+rf.pred <-  predict(rf, TestData)
+rf.rss <-  mean((TestData$Poverty - rf.pred)^2)
+rf.rss
+rf.tss <-  mean((TestData$Poverty - mean(TestData$Poverty))^2)
+rf.r2 <-  1 - rf.rss / rf.tss
+rf.r2
+
+rfFit <- randomForest(as.factor(Poverty) ~ trade + 
+                        Log_GDPpc + 
+                        GDPpcGrowth +
+                        Log_Pop +
+                        PopGrowth +
+                        Unem +
+                        Trade +
+                        Log_Tax, 
+                      data=TrainData, na.action = na.omit, importance = TRUE)
+#summary(rfFit)
+#varImpPlot(rfFit)
+#print(importance(rfFit, type=2))
+```
+
+```{r include=FALSE}
+## statistical analysis - GINI Index = Dependent 
+
+set.seed(11)
+N=dim(StatGINI)[1]
+trainG <-  sample(N, 0.8*N)
+testG <-  -train
+TrainGData <- StatGINI[trainG, ]
+TestGData <- StatGINI[testG, ]
+
+# Forward
+library(ISLR)
+library(leaps)
+regG.fit <- regsubsets(GINI~., data=TrainGData, nvmax=8, method="forward")
+#regG.summary <- summary(regG.fit)
+#par(mfrow=c(1, 3))
+#plot(regG.summary$cp,xlab="Number of Variables",ylab="Cp",type='l')
+#minG.cp <-  min(regG.summary$cp)
+#stdG.cp <-  sd(regG.summary$cp)
+#abline(h=minG.cp+0.2*stdG.cp, col="red", lty=2)
+#abline(h=minG.cp-0.2*stdG.cp, col="red", lty=2)
+#plot(regG.summary$bic,xlab="Number of Variables",ylab="BIC",type='l')
+#minG.bic <-  min(regG.summary$bic)
+#stdG.bic <-  sd(regG.summary$bic)
+#abline(h=minG.bic+0.2*stdG.bic, col="red", lty=2)
+#abline(h=minG.bic-0.2*stdG.bic, col="red", lty=2)
+#plot(regG.summary$adjr2,xlab="Number of Variables",
+     #ylab="Adjusted R2",type='l', ylim=c(0.0, 0.1))
+#maxG.adjr2 <-  max(regG.summary$adjr2)
+#stdG.adjr2 <-  sd(regG.summary$adjr2)
+#abline(h=maxG.adjr2+0.2*stdG.adjr2, col="red", lty=2)
+#abline(h=maxG.adjr2-0.2*stdG.adjr2, col="red", lty=2)
+
+
+# Linear 
+
+lmG.fit <- lm(GINI~ ., data=TrainGData)
+#summary(lmG.fit)
+lmG.pred <-  predict(lmG.fit, TestGData)
+lmG.rss <-  mean((TestGData$GINI - lmG.pred)^2)
+lmG.rss
+lmG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+lmG.tss
+lmG.r2 <-  1 - lmG.rss / lmG.tss
+lmG.r2
+
+# GAM (3 predictors)
+
+set.seed(11)
+regG.fit2 <-  regsubsets(GINI ~ . , data=StatGINI, method="forward")
+#coefi <-  coef(regG.fit2, id=3)
+#names(coefi)
+
+gamG.fit <-  gam(GINI ~  s(trade, df=3) + s(Trade, df=3) + s(PopGrowth, df=3),  data=TrainGData)
+#par(mfrow=c(1,3))
+#plot(gamG.fit, se=TRUE, col="blue")
+
+
+gamG.pred <-  predict(gamG.fit, TestGData)
+gamG.rss <-  mean((TestGData$GINI - gamG.pred)^2)
+gamG.rss
+gamG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+gamG.r2 <-  1 - gamG.rss / gamG.tss
+gamG.r2
+#summary(gamG.fit)
+
+```
+
+```{r include=FALSE}
+# Ridge 
+
+library(ISLR)
+library(glmnet)
+set.seed(11)
+
+trainG.mat <-  model.matrix(GINI ~ . , data = TrainGData)
+testG.mat <-  model.matrix(GINI ~ . , data = TestGData)
+
+grid <-  10 ^ seq(4, -2, length = 100)
+
+modG.ridge <-  cv.glmnet(trainG.mat, TrainGData[, "GINI"], alpha = 0, lambda = grid, thresh = 1e-12)
+
+lambdaG.best.ridge <-  modG.ridge$lambda.min
+lambdaG.best.ridge
+
+ridgeG.pred <-  predict(modG.ridge, newx = testG.mat, s = lambdaG.best.ridge)
+ridgeG.rss <- mean((TestGData[, "GINI"] - ridgeG.pred)^2)
+ridgeG.rss
+ridgeG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+ridgeG.r2 <-  1 - ridgeG.rss / ridgeG.tss
+ridgeG.r2
+
+predict(modG.ridge, type="coefficients", s=lambdaG.best.ridge)
+
+# Lasso
+
+set.seed(11)
+
+modG.lasso <-  cv.glmnet(trainG.mat, TrainGData[, "GINI"], 
+                        alpha = 1, lambda = grid, thresh = 1e-12)
+
+lambdaG.best.lasso <-  modG.lasso$lambda.min
+lambdaG.best.lasso
+
+lassoG.pred <-  predict(modG.lasso, newx = testG.mat, s = lambdaG.best.lasso)
+
+lassoG.rss <-  mean((TestGData$GINI - lassoG.pred)^2)
+lassoG.rss
+lassoG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+lassoG.r2 <-  1 - lassoG.rss / lassoG.tss
+lassoG.r2
+
+predict(modG.lasso, type="coefficients", s=lambdaG.best.lasso)
+
+set.seed(11)
+
+allG.mat <-  model.matrix(GINI~ . , data = StatGINI)
+
+modG.lasso <-  glmnet(allG.mat, StatGINI[, "GINI"], alpha = 1)
+
+predict(modG.lasso, s = lambdaG.best.lasso, type = "coefficients")
+
+# PCR
+
+library(pls)
+set.seed(11)
+
+pcrG.fit <-  pcr(GINI ~ . , data = TrainGData, scale = TRUE, validation = "CV")
+
+#par(mfrow=c(1, 1))
+#validationplot(pcrG.fit, val.type="MSEP")
+
+pcrG.pred <-  predict(pcrG.fit, TestGData, ncomp=2)
+pcrG.rss <- mean((TestGData[, "GINI"] - data.frame(pcrG.pred))^2) 
+pcrG.rss
+pcrG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+pcrG.r2 <-  1 - pcrG.rss / pcrG.tss
+pcrG.r2
+
+#summary(pcrG.fit)
+
+# PLS
+
+set.seed(11)
+plsG.fit <-  plsr(GINI ~ . , data = TrainGData, scale = TRUE, validation = "CV")
+
+#par(mfrow=c(1, 1))
+#validationplot(plsG.fit, val.type="MSEP")
+
+plsG.pred <-  predict(plsG.fit, TestGData, ncomp=1)
+plsG.rss <- mean((TestGData[, "GINI"] - data.frame(plsG.pred))^2) 
+plsG.rss
+plsG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+plsG.r2 <-  1 - plsG.rss / plsG.tss
+plsG.r2
+
+#summary(plsG.fit)
+
+```
+
+```{r include=FALSE}
+# Boosting
+library(gbm)
+set.seed(11)
+
+pows <-  seq(-10, 0.2, by=0.1)
+lambdas <-  10 ^ pows
+
+length.lambdas <-  length(lambdas)
+TrainErrors <-  rep(NA, length.lambdas)
+TestErrors <-  rep(NA, length.lambdas)
+
+for (i in 1:length.lambdas) {
+  boostG.Fit <-  gbm(GINI ~ ., data=TrainGData,
+                        distribution="gaussian",
+                        n.trees=1000,
+                        shrinkage=lambdas[i])
+  trainG.pred <-  predict(boostG.Fit, TrainGData, n.trees=1000)
+  testG.pred <-  predict(boostG.Fit, TestGData, n.trees=1000)
+  TrainErrors[i] <-  mean((TrainGData$GINI - trainG.pred)^2)
+  TestErrors[i] <-  mean((TestGData$GINI - testG.pred)^2)
+}
+
+#plot(lambdas, TrainErrors, type="b", xlab="Shrinkage", ylab="Train MSE", ylim=c(0, 150), col="blue", pch=20)
+
+min(TestErrors)
+lambdas[which.min(TestErrors)]
+
+boostG.best <-  gbm(GINI ~ .,data=TrainGData,
+                   distribution="gaussian", n.trees=1000,
+                   shrinkage=lambdas[which.min(TestErrors)])
+#summary(boostG.best)
+
+boostG.pred <-  predict(boostG.best, TestGData, n.trees=1000)
+boostG.rss <-  mean((TestGData$GINI - boostG.pred)^2)
+boostG.rss
+boostG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+boostG.r2 <-  1 - boostG.rss / boostG.tss
+boostG.r2
+
+# Bagging
+
+library(randomForest)
+set.seed(11)
+
+bagG.Fit <-  randomForest(GINI ~ ., data=TrainGData, 
+                            ntree=1000, mtry=8, importance=TRUE)
+bagG.pred <-  predict(bagG.Fit, TestGData)
+bagG.rss <-  mean((TestGData$GINI - bagG.pred)^2)
+bagG.rss
+bagG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+bagG.r2 <-  1 - bagG.rss / bagG.tss
+bagG.r2
+
+#varImpPlot(bagG.Fit)
+
+# Random Forest
+
+library(randomForest)
+
+set.seed(11)
+rfG <-  randomForest(GINI ~ ., data=TrainGData, n.trees=1000, importance=TRUE)
+rfG.pred <-  predict(rfG, TestGData)
+rfG.rss <-  mean((TestGData$GINI - rfG.pred)^2)
+rfG.rss
+rfG.tss <-  mean((TestGData$GINI - mean(TestGData$GINI))^2)
+rfG.r2 <-  1 - rfG.rss / rfG.tss
+rfG.r2
+
+rfGFit <- randomForest(as.factor(GINI) ~ trade + 
+                        Log_GDPpc + 
+                        GDPpcGrowth +
+                        Log_Pop +
+                        PopGrowth +
+                        Unem +
+                        Trade +
+                        Log_Tax, 
+                      data=TrainGData, na.action = na.omit, importance = TRUE)
+#summary(rfGFit)
+#varImpPlot(rfGFit)
+#print(importance(rfGFit, type=2))
+
+
+```
+
+
+```{r include=FALSE}
+## statistical analysis - Income share difference = Dependent
+
+set.seed(11)
+N=dim(StatShare)[1]
+trainS <-  sample(N, 0.8*N)
+testS <-  -trainS
+TrainSData <- StatShare[trainS, ]
+TestSData <- StatShare[testS, ]
+
+# Forward
+library(ISLR)
+library(leaps)
+regS.fit <- regsubsets(IncomeShare~., data=TrainSData, nvmax=8, method="forward")
+#regS.summary <- summary(regS.fit)
+#par(mfrow=c(1, 3))
+#plot(regS.summary$cp,xlab="Number of Variables",ylab="Cp",type='l')
+#minS.cp <-  min(regS.summary$cp)
+#stdS.cp <-  sd(regS.summary$cp)
+#abline(h=minS.cp+0.2*stdS.cp, col="red", lty=2)
+#abline(h=minS.cp-0.2*stdS.cp, col="red", lty=2)
+#plot(regS.summary$bic,xlab="Number of Variables",ylab="BIC",type='l')
+#minS.bic <-  min(regS.summary$bic)
+#stdS.bic <-  sd(regS.summary$bic)
+#abline(h=minS.bic+0.2*stdS.bic, col="red", lty=2)
+#abline(h=minS.bic-0.2*stdS.bic, col="red", lty=2)
+#plot(regS.summary$adjr2,xlab="Number of Variables",
+     #ylab="Adjusted R2",type='l', ylim=c(0.0, 0.1))
+#maxS.adjr2 <-  max(regS.summary$adjr2)
+#stdS.adjr2 <-  sd(regS.summary$adjr2)
+#abline(h=maxS.adjr2+0.2*stdS.adjr2, col="red", lty=2)
+#abline(h=maxS.adjr2-0.2*stdS.adjr2, col="red", lty=2)
+
+
+# Linear 
+
+lmS.fit <- lm(IncomeShare~ ., data=TrainSData)
+#summary(lmS.fit)
+lmS.pred <-  predict(lmS.fit, TestSData)
+lmS.rss <-  mean((TestSData$IncomeShare - lmS.pred)^2)
+lmS.rss
+lmS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+lmS.tss
+lmS.r2 <-  1 - lmS.rss / lmS.tss
+lmS.r2
+
+# GAM (3 predictors)
+
+set.seed(11)
+regS.fit2 <-  regsubsets(IncomeShare ~ . , data=StatShare, method="forward")
+#coefi <-  coef(regS.fit2, id=3)
+#names(coefi)
+
+gamS.fit <-  gam(IncomeShare ~  s(trade, df=3) + s(Trade, df=3) + s(PopGrowth, df=3),  data=TrainSData)
+#par(mfrow=c(1,3))
+#plot(gamS.fit, se=TRUE, col="blue")
+
+
+gamS.pred <-  predict(gamS.fit, TestSData)
+gamS.rss <-  mean((TestSData$IncomeShare - gamS.pred)^2)
+gamS.rss
+gamS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+gamS.r2 <-  1 - gamS.rss / gamS.tss
+gamS.r2
+#summary(gamS.fit)
+
+```
+
+```{r include=FALSE}
+# Ridge 
+
+library(ISLR)
+library(glmnet)
+set.seed(11)
+
+trainS.mat <-  model.matrix(IncomeShare ~ . , data = TrainSData)
+testS.mat <-  model.matrix(IncomeShare ~ . , data = TestSData)
+
+grid <-  10 ^ seq(4, -2, length = 100)
+
+modS.ridge <-  cv.glmnet(trainS.mat, TrainSData[, "IncomeShare"], alpha = 0, lambda = grid, thresh = 1e-12)
+
+lambdaS.best.ridge <-  modS.ridge$lambda.min
+lambdaS.best.ridge
+
+ridgeS.pred <-  predict(modS.ridge, newx = testS.mat, s = lambdaS.best.ridge)
+ridgeS.rss <- mean((TestSData[, "IncomeShare"] - ridgeS.pred)^2)
+ridgeS.rss
+ridgeS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+ridgeS.r2 <-  1 - ridgeS.rss / ridgeS.tss
+ridgeS.r2
+
+predict(modS.ridge, type="coefficients", s=lambdaS.best.ridge)
+
+# Lasso
+
+set.seed(11)
+
+modS.lasso <-  cv.glmnet(trainS.mat, TrainSData[, "IncomeShare"], 
+                        alpha = 1, lambda = grid, thresh = 1e-12)
+
+lambdaS.best.lasso <-  modS.lasso$lambda.min
+lambdaS.best.lasso
+
+lassoS.pred <-  predict(modS.lasso, newx = testS.mat, s = lambdaS.best.lasso)
+
+lassoS.rss <-  mean((TestSData$IncomeShare - lassoS.pred)^2)
+lassoS.rss
+lassoS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+lassoS.r2 <-  1 - lassoS.rss / lassoS.tss
+lassoS.r2
+
+predict(modS.lasso, type="coefficients", s=lambdaS.best.lasso)
+
+set.seed(11)
+
+allS.mat <-  model.matrix(IncomeShare~ . , data = StatShare)
+
+modS.lasso <-  glmnet(allS.mat, StatShare[, "IncomeShare"], alpha = 1)
+
+predict(modS.lasso, s = lambdaS.best.lasso, type = "coefficients")
+
+# PCR
+
+library(pls)
+set.seed(11)
+
+pcrS.fit <-  pcr(IncomeShare ~ . , data = TrainSData, scale = TRUE, validation = "CV")
+
+#par(mfrow=c(1, 1))
+#validationplot(pcrS.fit, val.type="MSEP")
+
+pcrS.pred <-  predict(pcrS.fit, TestSData, ncomp=3)
+pcrS.rss <- mean((TestSData[, "IncomeShare"] - data.frame(pcrS.pred))^2) 
+pcrS.rss
+pcrS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+pcrS.r2 <-  1 - pcrS.rss / pcrS.tss
+pcrS.r2
+
+#summary(pcrS.fit)
+
+# PLS
+
+set.seed(11)
+plsS.fit <-  plsr(IncomeShare ~ . , data = TrainSData, scale = TRUE, validation = "CV")
+
+#par(mfrow=c(1, 1))
+#validationplot(plsS.fit, val.type="MSEP")
+
+plsS.pred <-  predict(plsS.fit, TestSData, ncomp=1)
+plsS.rss <- mean((TestSData[, "IncomeShare"] - data.frame(plsS.pred))^2) 
+plsS.rss
+plsS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+plsS.r2 <-  1 - plsS.rss / plsS.tss
+plsS.r2
+
+#summary(plsS.fit)
+
+```
+
+```{r include=FALSE}
+# Boosting
+library(gbm)
+set.seed(11)
+
+pows <-  seq(-10, 0.2, by=0.1)
+lambdas <-  10 ^ pows
+
+length.lambdas <-  length(lambdas)
+TrainErrors <-  rep(NA, length.lambdas)
+TestErrors <-  rep(NA, length.lambdas)
+
+for (i in 1:length.lambdas) {
+  boostS.Fit <-  gbm(IncomeShare ~ ., data=TrainSData,
+                        distribution="gaussian",
+                        n.trees=1000,
+                        shrinkage=lambdas[i])
+  trainS.pred <-  predict(boostS.Fit, TrainSData, n.trees=1000)
+  testS.pred <-  predict(boostS.Fit, TestSData, n.trees=1000)
+  TrainErrors[i] <-  mean((TrainSData$IncomeShare - trainS.pred)^2)
+  TestErrors[i] <-  mean((TestData$IncomeShare - testS.pred)^2)
+}
+
+#plot(lambdas, TrainErrors, type="b", xlab="Shrinkage", ylab="Train MSE", ylim=c(0, 150), col="blue", pch=20)
+
+min(TestErrors)
+lambdas[which.min(TestErrors)]
+
+boostS.best <-  gbm(IncomeShare ~ .,data=TrainSData,
+                   distribution="gaussian", n.trees=1000,
+                   shrinkage=lambdas[which.min(TestErrors)])
+#summary(boostS.best)
+
+boostS.pred <-  predict(boostS.best, TestSData, n.trees=1000)
+boostS.rss <-  mean((TestSData$IncomeShare - boostS.pred)^2)
+boostS.rss
+boostS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+boostS.r2 <-  1 - boostS.rss / boostS.tss
+boostS.r2
+
+# Bagging
+
+library(randomForest)
+set.seed(11)
+
+bagS.Fit <-  randomForest(IncomeShare ~ ., data=TrainSData, 
+                            ntree=1000, mtry=8, importance=TRUE)
+bagS.pred <-  predict(bagS.Fit, TestSData)
+bagS.rss <-  mean((TestSData$IncomeShare - bagS.pred)^2)
+bagS.rss
+bagS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+bagS.r2 <-  1 - bagS.rss / bagS.tss
+bagS.r2
+
+#varImpPlot(bagS.Fit)
+
+# Random Forest
+
+library(randomForest)
+
+set.seed(11)
+rfS <-  randomForest(IncomeShare ~ ., data=TrainSData, n.trees=1000, importance=TRUE)
+rfS.pred <-  predict(rfS, TestSData)
+rfS.rss <-  mean((TestSData$IncomeShare - rfS.pred)^2)
+rfS.rss
+rfS.tss <-  mean((TestSData$IncomeShare - mean(TestSData$IncomeShare))^2)
+rfS.r2 <-  1 - rfS.rss / rfS.tss
+rfS.r2
+
+rfSFit <- randomForest(as.factor(IncomeShare) ~ trade + 
+                        Log_GDPpc + 
+                        GDPpcGrowth +
+                        Log_Pop +
+                        PopGrowth +
+                        Unem +
+                        Trade +
+                        Log_Tax, 
+                      data=TrainSData, na.action = na.omit, importance = TRUE)
+#summary(rfSFit)
+#varImpPlot(rfSFit)
+#print(importance(rfSFit, type=2))
+
+
+```
+
+
+
+
+**Appendix**
+
+Table 1--Summary of previous literatures 
+
+```{r include=FALSE}
+Lit <- read.csv("Lit.csv")
+library(pander)
+```
+
+```{r echo=FALSE, results='asis'}
+pandoc.table(Lit, caption="Literatures Summary")
+
+```
+
+Table 2--Summary statistics of control variables
+
+```{r include=FALSE}
+library(stargazer)
+```
+
+```{r echo=FALSE}
+
+# Descriptive Statistics 
+
+stargazer(subset(StatPov[c("Log_Tax", "Trade", "Unem", "PopGrowth", "Log_Pop", "GDPpcGrowth", "Log_GDPpc")]), title="Table - Control Variables", type="text", digits=1, header=FALSE, covariate.labels=c("Taxes on trade", "Trade Openness", "Unemployment rate", "Population growth rate", "Log of population", "GDP pc growth rate", "Log of GDP per capita"))
+
+```
+
+Figure 1--Heatmap
+
+```{r echo=FALSE}
+## Heatmap - trade term frequency
+
+library(ggplot2)
+
+
+ggplot(data=StatDF, aes(Country, Year)) +
+  geom_tile(aes(fill = trade), colour = "white") +
+  scale_fill_gradient2(name="Value",low="red", high="steelblue", space = "Lab", na.value = "white", guide = "colourbar") +
+  theme(axis.text.x = element_text(size = 2, angle = 90)) +
+  theme(axis.text.y = element_text(size = 5)) +
+  theme(axis.ticks=element_blank()) +
+  ggtitle('Trade Term Frequency') +
+  theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank())+
+  theme(panel.background = element_rect(fill = "gray60")) +
+  scale_y_discrete(limits = seq(1970,2010, 10))
+
+#ggsave("tradeTF.pdf")
+
+```
+
+Table 3--Value of adjusted R squared
+
+```{r include=FALSE}
+r2 <- matrix(c(lm.r2, gam.r2, ridge.r2, lasso.r2, pcr.r2, pls.r2, boost.r2, bag.r2, rf.r2, lmG.r2, gamG.r2, ridgeG.r2, lassoG.r2, pcrG.r2, plsG.r2, boostG.r2, bagG.r2, rfG.r2,lmS.r2, gamS.r2, ridgeS.r2, lassoS.r2, pcrS.r2, plsS.r2, boostS.r2, bagS.r2, rfS.r2), nrow=3, ncol=9, byrow=TRUE)
+
+colnames(r2)<-c("Linear R2","Gam R2", "Ridge R2","Lasso R2","PCR R2", "PLS R2","Boosting R2","Bagging R2","Random Forest R2")
+rownames(r2)<-c("Poverty", "Gini", "Difference")
+
+library(pander)
+```
+
+```{r echo=FALSE, results='asis'}
+# Summary results table
+pandoc.table(r2, caption="The value of R2")
+
+```
+
+Figure 2--Plot of Boosting on Poverty ratio
+
+```{r echo=FALSE}
+# boosting summary
+#par(mfrow=c(1,1))
+#summary(boostFit)
+
+
+imp2 <- as.data.frame(importance(rfFit))
+
+barplot(sort(imp2$MeanDecreaseGini), horiz = TRUE, 
+        names.arg = c("Trade Term Frequency", "GDP pc",  "GDPpc growth rate", "Population", "Pop growth rate", "Unemployment rate", "Trade ratio", "Taxes on trade"), cex.names=0.5,
+        xlim = c(300,400), col = "blue", main = "Poverty ratio", xlab = "Variable Importance", xpd=FALSE)
+```
+
+Figure 3--Plot of Random Forest on Gini Index
+
+```{r echo=FALSE}
+
+par(mfrow=c(1,1))
+impG <- as.data.frame(importance(rfGFit))
+
+barplot(sort(impG$MeanDecreaseGini), horiz = TRUE, 
+        names.arg = c("Trade Term Frequency", "GDP pc",  "GDPpc growth rate", "Population", "Pop growth rate", "Unemployment rate", "Trade ratio", "Taxes on trade"), cex.names=0.5,
+        xlim = c(300,400), col = "red", main = "GINI Index", xlab = "Variable Importance", xpd=FALSE)
+
+```
+
+Figure 4--Plot of Random Forest on Income share differences
+
+```{r echo=FALSE}
+impS <- as.data.frame(importance(rfSFit))
+
+barplot(sort(impS$MeanDecreaseGini), horiz = TRUE, 
+        names.arg = c("Trade Term Frequency", "GDP pc",  "GDPpc growth rate", "Population", "Pop growth rate", "Unemployment rate", "Trade ratio", "Taxes on trade"), cex.names=0.5,
+        xlim = c(300,400), col = "purple", main = "Income share difference", xlab = "Variable Importance", xpd=FALSE)
+
+
+```
+
