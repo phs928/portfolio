@@ -156,7 +156,7 @@ print(score_dataset(reduced_X_train, reduced_X_test, y_train, y_test))
 
 ## solution 2 - imputation 
 
-from sklearn.preprocessing import Imputer 
+from sklearn.impute import SimpleImputer 
 
 my_imputer = Imputer() 
 
@@ -311,10 +311,67 @@ X_valid = X_valid_full[my_cols].copy()
 X_train.head()
 
 ## constructing pipelines in 3 steps 
-# step 1: define preprocessing steps 
+      # step 1: define preprocessing steps 
 
-from future_encoders import ColumnTransformer 
+from sklearn.compose import ColumnTransformer 
+from sklearn.pipeline import Pipeline 
+from sklearn.impute import SimpleImputer 
+from sklearn.preprocessing import OneHotEncoder
 
+# preprocessing numerical data 
+
+numerical_transformer = SimpleImputer(strategy = 'constant')
+
+# preprocessing categorical data 
+
+categorical_transformer = Pipeline(steps = [
+      ('imputer', SimpleImputer(strategy = 'most_frequent')), 
+      ('onehot', OneHotEncoder(handle_unknown='ignore'))
+])
+
+# bundle preprocessing for numerical, categorical data 
+
+preprocessor = ColumnTransformer(
+      transformers = [
+            ('num', numerical_transformer, numerical_cols), 
+            ('cat', categorical_transformer, categorical_cols)
+      ]
+)
+
+      # step 2: define the model 
+
+from sklearn.ensemble import RandomForestRegressor
+
+model = RandomForestRegressor(n_estimators=100, random_state=0)
+
+      # step 3: create and evaluate the pipeline 
+# using Pipeline class to define a pipeline that bundles the preprocessing and modeling steps 
+
+#With the pipeline, we preprocess the training data and fit the model in a single line of code. 
+# (In contrast, without a pipeline, we have to do imputation, one-hot encoding, 
+# and model training in separate steps. This becomes especially messy 
+# if we have to deal with both numerical and categorical variables!)
+
+from sklearn.metrics import mean_absolute_error
+
+# bundle preprocessing and modeling code in a pipeline 
+
+my_pipeline = Pipeline(steps = [('preprocessor', preprocessor), 
+('model', model)])
+
+# preprocessing of training data and model 
+
+my_pipeline.fit(X_train, y_train)
+
+# preprocessing of validation data, get predictions 
+
+preds = my_pipeline.predict(X_valid)
+
+# evaluate the model 
+
+score = mean_absolute_error(y_valid, preds)
+
+print('MAE:', score)
 
 
 ## 4) cross-validation: 
@@ -340,7 +397,7 @@ y = data.Price
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import Pipeline 
-from sklearn.preprocessing import Imputer
+from sklearn.impute import SingleImputer
 
 # n_estimators : set the number of trees in the RF model 
 # random_state : reproducibility 
@@ -416,15 +473,15 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer 
 
-data = pd.read_csv('boost_train.csv')
+boost_data = pd.read_csv('boost_train.csv')
 
-data.describe()
+boost_data.describe()
 
-data.dropna(axis = 0, subset = ['SalePrice'], inplace = True)
+boost_data.dropna(axis = 0, subset = ['SalePrice'], inplace = True)
 
-y = data.SalePrice
+y = boost_data.SalePrice
 
-X = data.drop(['SalePrice'], axis = 1).select_dtypes(exclude = ['object'])
+X = boost_data.drop(['SalePrice'], axis = 1).select_dtypes(exclude = ['object'])
 
 train_X, test_X, train_y, test_y = train_test_split(X.as_matrix(), y.as_matrix(), test_size = 0.25)
 
@@ -435,8 +492,6 @@ train_X = my_imputer.fit_transform(train_X)
 test_X = my_imputer.fit_transform(test_X)
 
 # building a model 
-
-import xgboost as xgb
 
 from xgboost import XGBRegressor
 
