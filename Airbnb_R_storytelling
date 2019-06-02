@@ -1,0 +1,65 @@
+library("ggplot2")
+library("tidyverse")
+library("dplyr")
+
+Listings <- read.csv("Listings.csv", stringsAsFactor  = FALSE)
+HousePrices <- read.csv("HousePrices.csv", stringsAsFactor = FALSE)
+Reviews <- read.csv("Reviews.csv", stringsAsFactor = FALSE)
+Hosts <- read.csv("Hosts.csv", stringsAsFactor = FALSE)
+Calendar <- read.csv("Calendar.csv", stringsAsFactor = FALSE)
+
+# data exploration 
+
+str(Listings)
+rm(list = ls())
+
+sum(is.na(Listings))
+
+# missing data 
+
+head(Listings)
+
+    # bathrooms NA bedrooms NA beds NA cleaning fee NA security deposit implict missing 
+
+Listings$bathrooms[which(is.na(Listings$bathrooms))] <- 0
+Listings$bedrooms[which(is.na(Listings$bedrooms))] <- 0
+Listings$beds[which(is.na(Listings$beds))] <- 0 
+Listings$cleaning.fee[which(is.na(Listings$cleaning.fee))] <- 0 
+## Listings$security.depsit[which(is.na(Listings$security.deposit))] <- 0 
+
+head(Listings)
+
+
+# ggplot 
+
+str(Listings)
+
+price_neighbourhood1 <- ggplot(Listings) + 
+geom_point(mapping = aes(x = neighbourhood, y = price ))
+
+print(price_neighbourhood1)
+
+price_neighbourhood2 <- ggplot(Listings) + 
+geom_point(mapping = aes(x = neighbourhood, y = price, color = property.type ))
+
+print(price_neighbourhood2)
+
+    ## color, shape, alpha, size 
+
+facet <- ggplot(Listings) + 
+geom_point(mapping = aes(x = neighbourhood, y = price)) + 
+facet_wrap(~class, nrow = 2)
+
+print(facet)
+
+    ## geom_point, geom_smooth 
+    
+
+    ## ggplot practice using mpg data frame 
+
+ggplot(data = mpg) + 
+geom_point(mapping = aes(x = displ, y = hwy, color = class))
+
+ggplot(data = mpg) + 
+geom_point(mapping = aes(x = displ, y = hwy)) + 
+facet_wrap(~ class, nrow = 2)
