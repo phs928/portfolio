@@ -1,6 +1,10 @@
+# import libraries 
+
 library("ggplot2")
 library("tidyverse")
 library("dplyr")
+
+# reading csv files 
 
 Listings <- read.csv("Listings.csv", stringsAsFactor  = FALSE)
 HousePrices <- read.csv("HousePrices.csv", stringsAsFactor = FALSE)
@@ -30,9 +34,13 @@ Listings$cleaning.fee[which(is.na(Listings$cleaning.fee))] <- 0
 head(Listings)
 
 
-# ggplot 
+# data visualisation - ggplot 
+# - which bourough you want to buy? 
+# DV: bourough, neighbourhood / IV: price, mean_price, room type, review rating, (avgsentiment) 
 
 str(Listings)
+
+    # geom_point - too messy way 
 
 price_neighbourhood1 <- ggplot(Listings) + 
 geom_point(mapping = aes(x = neighbourhood, y = price ))
@@ -53,7 +61,37 @@ facet_wrap(~class, nrow = 2)
 print(facet)
 
     ## geom_point, geom_smooth 
-    
+
+    ## geom_bar (stat_count), geom_boxplot, geom_polygon 
+
+ggplot(data = diamonds) + 
+geom_bar(mapping = aes(x = cut, y = ..prop.., group = 1 )) 
+    ## fill, colour... 
+
+head(Listings)
+
+table(Listings$price)
+
+Listings2 <- 
+Listings %>% 
+filter(!is.na(neighbourhood)) %>% 
+count(neighbourhood, price)
+
+price_neighbourhood3 <- ggplot(data = Listings2, aes(x = n, y = price, colour = neighbourhood)) + 
+geom_count() 
+
+print(price_neighbourhood3)
+
+Listings3 <- 
+Listings %>% 
+filter(!is.na(neighbourhood)) %>% 
+mutate()
+
+price_neighbourhood4 <- ggplot(data = Listings2, aes(sum(price), color = neighbourhood)) + 
+geom_histogram(binwidth = 0.1)
+
+print(price_neighbourhood4)
+
 
     ## ggplot practice using mpg data frame 
 
