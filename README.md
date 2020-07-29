@@ -1,6 +1,6 @@
 # Hyesoo's portfolio for data science 
 
-Practice projects - using R, Python, SQL 
+Practice coding for data science - with R, Python, SQL 
 
 
 
