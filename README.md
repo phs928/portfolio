@@ -15,6 +15,6 @@ Each project includes a short summary, used tools, and links to dashboards or re
 |--------|-------------|------|------|
 | Lead Analysis Dashboard | Conversion funnel dashboard using media buying data | Power BI, SQL | [View](./powerbi-lead-analysis/description.md) |
 | Email Cleaning Automation | Python script to clean and validate emails | Python | [View](./python-email-cleaning/description.md) |
-| Prediction House price (Kaggle) | Machine learning model using House price data | Python, ML | [Kaggle]([https://www.kaggle.com/code/hyesoorachel/house-price-prediction] |
+| Prediction House price (Kaggle) | Machine learning model using House price data | Python, ML | [Kaggle]([./https://www.kaggle.com/code/hyesoorachel/house-price-prediction] |
 
 
