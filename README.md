@@ -1,4 +1,20 @@
-# Hyesoo's repository for Portfolio 
+# Hyesoo Park's Data Portfolio
 
+Welcome! This portfolio showcases my personal and professional data projects, including:
+
+- 📊 Power BI dashboards
+- 🐍 Python automation scripts
+- 📁 SQL-based reporting
+- 🔗 Linked Kaggle notebooks
+
+Each project includes a short summary, used tools, and links to dashboards or results.
+
+## 🔍 Project List
+
+| Project | Description | Tech | Link |
+|--------|-------------|------|------|
+| Lead Analysis Dashboard | Conversion funnel dashboard using media buying data | Power BI, SQL | [View](./powerbi-lead-analysis/description.md) |
+| Email Cleaning Automation | Python script to clean and validate emails | Python | [View](./python-email-cleaning/description.md) |
+| Predicting Churn (Kaggle) | Classification model using customer churn data | Python, ML | [Kaggle](https://www.kaggle.com/your-link) |
 
 
