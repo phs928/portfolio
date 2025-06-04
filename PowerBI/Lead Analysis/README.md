@@ -29,7 +29,7 @@ This dashboard helps stakeholders:
 
 ## 📸 Sample Screenshot
 
-![Dashboard Preview](Lead Overview.JPG)
+![Dashboard Preview](Lead-screenshot.JPG)
 
 ## 🔗 Deployment
 
