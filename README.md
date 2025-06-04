@@ -3,8 +3,8 @@
 Welcome! This portfolio showcases my personal and professional data projects, including:
 
 - 📊 Power BI dashboards
-- 🐍 Python automation scripts
-- 📁 SQL-based reporting
+- 🐍 Python scripts
+- 📁 SQL-based data cleaning and transformation 
 - 🔗 Linked Kaggle notebooks
 
 Each project includes a short summary, used tools, and links to dashboards or results.
