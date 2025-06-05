@@ -13,8 +13,8 @@ Each project includes a short summary, used tools, and links to dashboards or re
 
 | Project | Description | Tech | Link |
 |--------|-------------|------|------|
-| Lead Analysis Dashboard | Conversion funnel dashboard using media buying data | Power BI, SQL | [View](https://github.com/phs928/portfolio/tree/master/PowerBI/lead-analysis) |
+| Lead Analysis Dashboard | Conversion funnel dashboard using media buying data | Power BI, SQL | [View](https://github.com/phs928/portfolio/tree/master/PowerBI/Lead%20Analysis) |
 | News API | Python script to collect API from News | Python | [View](https://github.com/phs928/portfolio/tree/master/Python/News%20Keyword%20Analysis) |
-| Prediction House price (Kaggle) | Machine learning model using House price data | Python, ML | [Kaggle](https://www.kaggle.com/code/hyesoorachel/house-price-prediction) |
+| Prediction House price (Kaggle) | Machine learning model using House price data | Python, ML | [View](https://www.kaggle.com/code/hyesoorachel/house-price-prediction) |
 
 
