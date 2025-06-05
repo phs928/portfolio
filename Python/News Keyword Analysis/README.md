@@ -21,6 +21,9 @@ This project demonstrates basic API handling, NLP techniques and effective keywo
 - Extracts and counts words with length > 3
 - Generates a Word Cloud visualisation
 
+## 🔍 What It Says 
+- 'Google', 'Microsoft', 'Gemini', 'OpenAI' are the most frequent words mentioned in news articles for the period of 5th May 2025 to 4th June 2025 
+
 ## 💻 Sample Output
 
 ![wordcloud](wordcloud.png)
