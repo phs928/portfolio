@@ -9,6 +9,7 @@ It performs keyword extraction, text cleaning, and word frequency analysis to ge
   
 - re (regex) 
 - collections.Counter
+- nltk 
 - matplotlib
 - WordCloud 
 
