@@ -1,6 +1,6 @@
 # LeetCode SQL Solutions
 
-## 176. Second Highest Salary
+## 185. Department Top Three Salaries
 
 **Problem:** Find the three top high earners in each department 
 
