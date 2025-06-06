@@ -22,7 +22,6 @@ This part analyses customer responses to five campaigns and which campaign was t
 
 ### 🧪 Sample SQL:
 
-```sql 
 
 ## 2. Demographic Customer Segmentation 
 
