@@ -25,16 +25,20 @@ This part analyses customer responses to five campaigns and which campaign was t
 
 ## 2. Demographic Customer Segmentation 
 
-This part analyses customer segmentation by their demographic information to see which segment was the most responsive to campaigns
+This part segments customers based on their demographic information to understand which segments are the most responsive to campaigns and valuable 
 
 ### 🎯 Objectives:
+- Segment customers based on income and age
+- Examine which segments respond best to marketing campaigns 
 
 ### 🧪 Sample SQL:
 
 ## 3. Purchase Channel Analysis 
 
-This part analyses purchasing behaviour by channel - i.e., store, catalog, online 
+This part analyses customers' with purchase channels (i.e., store, catalogue, online) to identify preferences and habits 
 
 ### 🎯 Objectives:
+- Evaluate average usage of each channel
+- Examine relationship between Online visits and purchases 
 
 ### 🧪 Sample SQL:
