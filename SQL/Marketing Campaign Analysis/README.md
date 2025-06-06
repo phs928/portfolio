@@ -17,9 +17,9 @@ It is divided into 3 parts:
 This part analyses customer responses to five campaigns and which campaign was the most effective in leading to a conversion 
 
 ### 🎯 Objectives:
-- Calculate acceptance rates for each campaign
-- Identify demographic traits of campaign responders
-
+- Calculate acceptance rates for each campaign and identify which campaign had the highest acceptance rate 
+- Understand which types of customers are more likely to respond to campaigns 
+  
 ### 🧪 Sample SQL:
 
 
@@ -27,9 +27,9 @@ This part analyses customer responses to five campaigns and which campaign was t
 
 This part segments customers based on their demographic information to understand which segments are the most responsive to campaigns and valuable 
 
-### 🎯 Objectives:
-- Segment customers based on income and age
-- Examine which segments respond best to marketing campaigns 
+### 🎯 Objectives: 
+- Profile customers by demographic traits
+- Identify high-value customer segments 
 
 ### 🧪 Sample SQL:
 
@@ -39,6 +39,6 @@ This part analyses customers' with purchase channels (i.e., store, catalogue, on
 
 ### 🎯 Objectives:
 - Evaluate average usage of each channel
-- Examine relationship between Online visits and purchases 
+- Find preferred purchase channels for different customer groups  
 
 ### 🧪 Sample SQL:
