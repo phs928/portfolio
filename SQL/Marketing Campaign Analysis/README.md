@@ -23,7 +23,7 @@ This part analyses customer responses to five campaigns and which campaign was t
 ### 🧪 Sample SQL:
 
 
-## 2. Demographic Customer Segmentation 
+## 🧬 2. Demographic Customer Segmentation 
 
 This part segments customers based on their demographic information to understand which segments are the most responsive to campaigns and valuable 
 
@@ -33,7 +33,7 @@ This part segments customers based on their demographic information to understan
 
 ### 🧪 Sample SQL:
 
-## 3. Purchase Channel Analysis 
+## 🛒 3. Purchase Channel Analysis 
 
 This part analyses customers' with purchase channels (i.e., store, catalogue, online) to identify preferences and habits 
 
