@@ -12,16 +12,30 @@ It is divided into 3 parts:
 - Source: [Kaggle - Marketing Campaign Dataset](https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign)
 - Data: Customer demographics, campaign responses, product spending, channel interactions
 
-## 1. Campaign Response Analysis 
+## 📈 1. Campaign Response Analysis 
 
 This part analyses customer responses to five campaigns and which campaign was the most effective in leading to a conversion 
 
+### 🎯 Objectives:
+- Calculate acceptance rates for each campaign
+- Identify demographic traits of campaign responders
+
+### 🧪 Sample SQL:
+
+```sql 
+
 ## 2. Demographic Customer Segmentation 
 
-This part analyses customer segmentation by their demographic information to see which segment was the most responsive to campaigns 
+This part analyses customer segmentation by their demographic information to see which segment was the most responsive to campaigns
+
+### 🎯 Objectives:
+
+### 🧪 Sample SQL:
 
 ## 3. Purchase Channel Analysis 
 
 This part analyses purchasing behaviour by channel - i.e., store, catalog, online 
 
+### 🎯 Objectives:
 
+### 🧪 Sample SQL:
