@@ -38,10 +38,9 @@ This part segments customers based on their demographic information to understan
 ### 🧩 Key Steps 
 1. ***Dataset Loading*** 
 2. ***Data cleaning & transformation***
-   - Handled missing values in `income`
-   - Reclassified `marital_status`, `education`, and child presence
-   - Created new variables: `income_band`, `age_band`, `education_group`, `children_group`
-3. ***Demographic segmentation***
+   - Handled missing values in `income` 
+   - Reclassified and created new variables: `income_band`, `age_band`, `children_group`
+3. ***Demographic segmentation*** 
    - Manually defined segments using age, income, marital status, education, and child presence
    - Assigned labels such as:
      *Young Single Professionals*
