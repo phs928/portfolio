@@ -42,3 +42,20 @@ This part analyses customers' with purchase channels (i.e., store, catalogue, on
 - Find preferred purchase channels for different customer groups  
 
 ### 🧪 Sample SQL:
+
+
+## 📊 Power BI Dashboard Overview
+
+### Page 1 – Campaign Performance: Response rate per campaign
+
+### Page 2 – Customer Segmentation: Response rate by income & age
+
+### Page 3 – Channel Analysis: Purchase behaviour by channel and visits
+
+## 🔍 Key Insights
+
+
+## 🧰 Tools Used 
+
+- Microsoft SQL Server for data cleaning and analysis
+- Power BI for dashboard creation and visual insights 
