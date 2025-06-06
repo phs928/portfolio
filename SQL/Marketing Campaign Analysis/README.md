@@ -18,7 +18,14 @@ This part analyses customer responses to five campaigns and which campaign was t
 
 ### 🎯 Objectives:
 - Calculate acceptance rates for each campaign and identify which campaign had the highest acceptance rate 
-- Understand which types of customers are more likely to respond to campaigns 
+- Understand which types of customers are more likely to respond to campaigns
+
+### 🔍 Key Insights
+
+- Campaign response rate (%)
+- Average spend per product type 
+- Total spend 
+- Recency 
   
 ### 🧪 Sample SQL:
 
@@ -29,9 +36,44 @@ This part segments customers based on their demographic information to understan
 
 ### 🎯 Objectives: 
 - Profile customers by demographic traits
-- Identify high-value customer segments 
+- Identify high-value customer segments
+
+### 🧩 Key Steps 
+1. **Dataset Loading** 
+2. Data cleaning & transformation
+   - Handled missing values in `income`
+   - Reclassified `marital_status`, `education`, and child presence
+   - Created new variables: `income_band`, `age_band`, `education_group`, `children_group`
+3. Demographic segmentation
+   - Manually defined segments using age, income, marital status, education, and child presence
+   - Assigned labels such as:
+     *Young Single Professionals*
+     *Middle-aged Married Parents*
+     *Affluent Seniors*
+     *Budget-Conscious Families*
+4. KPI Analysis
+   - Calculated campaign `response_rate` per segment
+   - Measured average `spend per product category` across segments
+   - Built proxy metrics for **Monetary** and **Recency**
+
+### 🔍 Key Insights
+
+- Campaign response rate (%)
+- Average spend per product type 
+- Total spend 
+- Recency 
 
 ### 🧪 Sample SQL:
+
+
+### 📊 Power BI Dashboard Overview
+
+#### Page 1 – Campaign Performance: Response rate per campaign
+
+#### Page 2 – Customer Segmentation: Response rate by income & age
+
+#### Page 3 – Channel Analysis: Purchase behaviour by channel and visits
+
 
 ## 🛒 3. Purchase Channel Analysis 
 
@@ -44,20 +86,6 @@ This part analyses customers' with purchase channels (i.e., store, catalogue, on
 ### 🧪 Sample SQL:
 
 
-## 📊 Power BI Dashboard Overview
-
-### Page 1 – Campaign Performance: Response rate per campaign
-
-### Page 2 – Customer Segmentation: Response rate by income & age
-
-### Page 3 – Channel Analysis: Purchase behaviour by channel and visits
-
-## 🔍 Key Insights
-
-- Campaign response rate (%)
-- Average spend per product type 
-- Total spend 
-- Recency 
 
 
 ## 🧰 Tools Used 
