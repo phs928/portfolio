@@ -54,6 +54,11 @@ This part analyses customers' with purchase channels (i.e., store, catalogue, on
 
 ## 🔍 Key Insights
 
+- Campaign response rate (%)
+- Average spend per product type 
+- Total spend 
+- Recency 
+
 
 ## 🧰 Tools Used 
 
