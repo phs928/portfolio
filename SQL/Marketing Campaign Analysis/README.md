@@ -43,10 +43,13 @@ This part segments customers based on their demographic information to understan
 3. ***Demographic segmentation*** 
    - Manually defined segments using age, income, marital status, education, and child presence
    - Assigned labels such as:
-     *Young Single Professionals*
-     *Middle-aged Married Parents*
-     *Affluent Seniors*
-     *Budget-Conscious Families*
+     *"Young Professionals"*, 
+     *"Middle-aged Married Parents"*, 
+     *"Budget-Conscious Families"*,
+     *"Married No Kids"*,
+     *"Solo Households"*,
+     *"Older Married Parents"*,
+     *"Other group"* 
 4. ***KPI Analysis***
    - Calculated campaign `response_rate` per segment
    - Measured average `spend per product category` across segments 
