@@ -3,31 +3,17 @@
 This project analyses customer behaviour and marketing effectiveness using SQL and Power BI. 
 It is divided into 3 parts: 
 
-1. Campaign Response Analysis
-2. Demographic Customer Segmentation
+1. Customer Segmentation Analysis 
+2. Product Type Analysis 
 3. Purchase Channel Analysis
+4. RFM Analysis 
 
 ## 📁 Dataset
 
 - Source: [Kaggle - Marketing Campaign Dataset](https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign)
 - Data: Customer demographics, campaign responses, product spending, channel interactions
 
-## 📈 1. Campaign Response Analysis 
-
-This part analyses customer responses to five campaigns and which campaign was the most effective in leading to a conversion 
-
-### 🎯 Objectives:
-- Calculate acceptance rates for each campaign and identify which campaign had the highest acceptance rate 
-- Understand which types of customers are more likely to respond to campaigns
-
-### 🔍 Key Insights
-
-- Campaign response rate (%)
-  
-### 🧪 Sample SQL:
-
-
-## 🧬 2. Demographic Customer Segmentation 
+## 📈 🧬 1. Demographic Customer Segmentation 
 
 This part segments customers based on their demographic information to understand which segments are the most responsive to campaigns and valuable 
 
@@ -67,19 +53,8 @@ This part segments customers based on their demographic information to understan
 ### 🧪 Sample SQL:
 
 
-### 📊 Power BI Dashboard Overview
 
-#### Page 1 – Campaign Performance: Response rate per campaign
-
-
-#### Page 2 – Customer Segmentation: Response rate by income & age
-
-
-#### Page 3 – Channel Analysis: Purchase behaviour by channel and visits
-
-
-
-## 🛒 3. Purchase Channel Analysis 
+## 🛒 2. Purchase Channel Analysis 
 
 This part analyses customers' with purchase channels (i.e., store, catalogue, online) to identify preferences and habits 
 
@@ -94,3 +69,22 @@ This part analyses customers' with purchase channels (i.e., store, catalogue, on
 
 - Microsoft SQL Server for data cleaning and analysis
 - Power BI for dashboard creation and visual insights 
+
+
+
+
+## 📊 Power BI Dashboard Overview
+
+### Page 1 – Executive Overview 
+
+
+### Page 2 – Customer Segmentation: Response rate by income & age
+
+
+### Page 3 - Product Type Analysis: Customers' preferred Product Type 
+
+
+### Page 4 – Channel Analysis: Purchase behaviour by channel and visits
+
+
+### Page 5 - RFM Analysis 
