@@ -54,9 +54,25 @@ This part segments customers based on their demographic information to understan
 
 
 
-## 🛒 2. Purchase Channel Analysis 
+## 🛒 2. Product Type Analysis 
 
-This part analyses customers' with purchase channels (i.e., store, catalogue, online) to identify preferences and habits 
+This part analyses customers' preferred product types (i.e., Wine, Fruits, Meat, Sweet, Fish, Gold) to identify product preferences 
+
+### 🎯 Objectives:
+- Evaluate which product type customers spend the most 
+- Find preferred products  
+
+### 🧪 Sample SQL:
+
+
+## 🧰 Tools Used 
+
+- Microsoft SQL Server for data cleaning and analysis
+- Power BI for dashboard creation and visual insights 
+
+## 🛒 3. Purchase Channel Analysis 
+
+This part analyses customers' purchase channels (i.e., store, catalogue, online) to identify preferences and habits 
 
 ### 🎯 Objectives:
 - Evaluate average usage of each channel
@@ -69,7 +85,6 @@ This part analyses customers' with purchase channels (i.e., store, catalogue, on
 
 - Microsoft SQL Server for data cleaning and analysis
 - Power BI for dashboard creation and visual insights 
-
 
 
 
