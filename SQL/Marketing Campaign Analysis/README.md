@@ -10,23 +10,24 @@ It is divided into 3 parts:
 
 ## 📁 Dataset
 
-- Source: [Kaggle - Marketing Campaign Dataset](https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign)
-- Data: Customer demographics, campaign responses, product spending, channel interactions (2,216 records after cleaning) 
+- **Source**: [Kaggle - Marketing Campaign Dataset](https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign)
+- **Data**: Customer demographics, campaign responses, product spending, channel interactions
+- **Size**: 2,216 records after cleaning 
 
 ## 🧰 Tools Used 
 
-- Microsoft SQL Server for data cleaning and analysis
-- Power BI for dashboard creation and visual insights
+- **Microsoft SQL Server**: Data cleaning and preprocessing 
+- **Power BI**: Dashboard development and visual insight generation
 
   
 
-## 📈 🧬 1. Customer Segmentation Analysis 
+## 🔎 1. Customer Segmentation Analysis 
 
-This part segments customers based on their demographic information to understand which segments are the most responsive to campaigns and valuable 
+This part segments customers based on their demographic features to understand which segments are the most responsive to campaigns and valuable 
 
 ### 🎯 Objectives: 
-- Profile customers by demographic traits 
-- Identify high-value customer segments
+- Profile customers by demographic attributes 
+- Identify high-value and high-responsive customer segments
 
 ### 🧩 Key Steps 
 1. ***Dataset Loading*** 
@@ -46,72 +47,80 @@ This part segments customers based on their demographic information to understan
 4. ***KPI Analysis***
    - Calculated campaign `response_rate` per segment
    - Measured average `spend per product category` across segments 
-   - Built proxy metrics for **Monetary** and **Recency**
 
 ### 🔍 Key Insights
 
-- "Married No Kids" segment spent the most
-- "Young Professionals" segment has the highest response rate and average spend value 
-
-### 🧪 Sample SQL:
-
+- The "Married No Kids" segment showed the **highest total spend** 
+- "Young Professionals" segment had the **highest average spend** and **response rate** 
 
 
 ## 🛒 2. Product Type Analysis 
 
-This part analyses customers' preferred product types (i.e., Wine, Fruits, Meat, Sweet, Fish, Gold) to identify product preferences 
+This section analyses which products customers prefer and spend most on (i.e., Wine, Fruits, Meat, Sweet, Fish, Gold) 
 
 ### 🎯 Objectives:
-- Evaluate which product type customers spend the most 
-- Find preferred products
+- Identify most popular product types by spend  
+- Understand purchasing patterns by segment 
 
 ### 🔍 Key Insights
-- Wines accounted for 50% of all spend  
+- **Wines** accounted for **over 50%** of total customer spending  
+- High-value customers showed consistent interest in Meat and Gold as well
 
-### 🧪 Sample SQL:
 
+## 🛍️ 3. Purchase Channel Analysis 
 
-## 🛒 3. Purchase Channel Analysis 
-
-This part analyses customers' purchase channels (i.e., store, catalogue, online) to identify preferences and habits 
+This part explores how customers interact with different purchase channels (store, catalogue, web)
 
 ### 🎯 Objectives:
-- Evaluate average usage of each channel
-- Find preferred purchase channels for different customer groups
+- Measure average and total transactions by channel  
+- Identify channel preferences by segment 
 
 ### 🔍 Key Insights
-- Most transactions happened in store (46%), followed by web (32%) 
+- **Store** was the most used channel (46% of transactions), followed by **web** (32%)  
+- High-value customers tended to use multiple channels
 
-### 🧪 Sample SQL:
 
+## 🧮 4. RFM Analysis 
 
-## 🛒 4. RFM Analysis 
-
-This part analyses customers' recency (how recent they made purchases), frequency (how often they made purchases) and monetary (how much they spent) scores and evaluates which customers are valuable and which customers require revisiting marketing strategy 
+This section evaluates customer value using **Recency**, **Frequency**, and **Monetary** scoring
 
 ### 🎯 Objectives:
-- Evaluate RFM score for each customer 
-- Find the most valuable customers and customers at risk 
+- Score customers based on purchase recency, frequency, and spending  
+- Classify customers into value-based segments (e.g. VIP, Loyal, At Risk)
+
+### 🧩 Key Steps
+- Created **Recency Score** (based on days since last purchase)  
+- Created **Frequency Score** (based on number of accepted campaigns)  
+- Created **Monetary Score** (based on total spend)  
+- Assigned two RFM labels:
+  - **Simple**: Based on Recency & Frequency
+  - **Extended**: Based on Recency, Frequency & Monetary
 
 ### 🔍 Key Insights
-- 
-
-### 🧪 Sample SQL:
-
-
-
-## 📊 Power BI Dashboard Overview
-
-### Page 1 – Executive Overview 
+- Over **38%** of customers were classified as **At Risk**  
+- Only **0.1%** of customers qualified as **VIP**, suggesting highly selective criteria  
+- Extended RFM helped distinguish **High Spenders** with low frequency
 
 
-### Page 2 – Customer Segmentation: Response rate by income & age
+## 📊 Power BI Dashboard Overview 
+
+| Page | Description |
+|------|-------------|
+| **Page 1 – Executive Overview** | KPIs, top segments/products/channels summary |
+| **Page 2 – Customer Segmentation** | Response rate, spend, count by segment |
+| **Page 3 – Product Type Analysis** | Spend and penetration by product type |
+| **Page 4 – Channel Analysis** | Channel usage, average transactions |
+| **Page 5 – RFM Analysis** | R/F/M scoring and customer labelling |
+
+---
+
+## 📷 Dashboard Screenshots
 
 
-### Page 3 - Product Type Analysis: Customers' preferred Product Type 
+---
+
+## 📦 Sample SQL Queries
 
 
-### Page 4 – Channel Analysis: Purchase behaviour by channel and visits
+---
 
-
-### Page 5 - RFM Analysis 
