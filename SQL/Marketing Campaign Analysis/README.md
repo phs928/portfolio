@@ -116,7 +116,7 @@ This section evaluates customer value using **Recency**, **Frequency**, and **Mo
 
 ## 📷 Dashboard Screenshots
 
-![marketingcampaign_overview](marketingcampaign_overview.jpg)
+![marketingcampaign_overview](marketingcampaign_overview.JPG)
 ---
 
 ## 📦 Sample SQL Queries
