@@ -11,14 +11,21 @@ It is divided into 3 parts:
 ## 📁 Dataset
 
 - Source: [Kaggle - Marketing Campaign Dataset](https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign)
-- Data: Customer demographics, campaign responses, product spending, channel interactions
+- Data: Customer demographics, campaign responses, product spending, channel interactions (2,216 records after cleaning) 
 
-## 📈 🧬 1. Demographic Customer Segmentation 
+## 🧰 Tools Used 
+
+- Microsoft SQL Server for data cleaning and analysis
+- Power BI for dashboard creation and visual insights
+
+  
+
+## 📈 🧬 1. Customer Segmentation Analysis 
 
 This part segments customers based on their demographic information to understand which segments are the most responsive to campaigns and valuable 
 
 ### 🎯 Objectives: 
-- Profile customers by demographic traits
+- Profile customers by demographic traits 
 - Identify high-value customer segments
 
 ### 🧩 Key Steps 
@@ -40,15 +47,11 @@ This part segments customers based on their demographic information to understan
    - Calculated campaign `response_rate` per segment
    - Measured average `spend per product category` across segments 
    - Built proxy metrics for **Monetary** and **Recency**
-5. ***RFM Feasibility***
-   - Although `frequency` is missing, campaign participation (`AcceptedCmp1-5`) was used as a proxy 
 
 ### 🔍 Key Insights
 
-- Campaign response rate (%)
-- Average spend per product type 
-- Total spend 
-- Recency 
+- "Married No Kids" segment spent the most
+- "Young Professionals" segment has the highest response rate and average spend value 
 
 ### 🧪 Sample SQL:
 
@@ -60,15 +63,13 @@ This part analyses customers' preferred product types (i.e., Wine, Fruits, Meat,
 
 ### 🎯 Objectives:
 - Evaluate which product type customers spend the most 
-- Find preferred products  
+- Find preferred products
+
+### 🔍 Key Insights
+- Wines accounted for 50% of all spend  
 
 ### 🧪 Sample SQL:
 
-
-## 🧰 Tools Used 
-
-- Microsoft SQL Server for data cleaning and analysis
-- Power BI for dashboard creation and visual insights 
 
 ## 🛒 3. Purchase Channel Analysis 
 
@@ -76,15 +77,26 @@ This part analyses customers' purchase channels (i.e., store, catalogue, online)
 
 ### 🎯 Objectives:
 - Evaluate average usage of each channel
-- Find preferred purchase channels for different customer groups  
+- Find preferred purchase channels for different customer groups
+
+### 🔍 Key Insights
+- Most transactions happened in store (46%), followed by web (32%) 
 
 ### 🧪 Sample SQL:
 
 
-## 🧰 Tools Used 
+## 🛒 4. RFM Analysis 
 
-- Microsoft SQL Server for data cleaning and analysis
-- Power BI for dashboard creation and visual insights 
+This part analyses customers' recency (how recent they made purchases), frequency (how often they made purchases) and monetary (how much they spent) scores and evaluates which customers are valuable and which customers require revisiting marketing strategy 
+
+### 🎯 Objectives:
+- Evaluate RFM score for each customer 
+- Find the most valuable customers and customers at risk 
+
+### 🔍 Key Insights
+- 
+
+### 🧪 Sample SQL:
 
 
 
