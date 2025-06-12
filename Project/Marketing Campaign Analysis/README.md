@@ -76,7 +76,7 @@ This part explores how customers interact with different purchase channels (stor
 - Identify channel preferences by segment 
 
 ### 🔍 Key Insights
-- **Store** was the most used channel (46% of transactions), followed by **web** (32%)  
+- **Store** was the most used channel (46.2% of transactions), followed by **web** (32.5%)  
 - High-value customers tended to use multiple channels
 
 
@@ -98,8 +98,7 @@ This section evaluates customer value using **Recency**, **Frequency**, and **Mo
 
 ### 🔍 Key Insights
 - Over **38%** of customers were classified as **At Risk**  
-- Only **0.1%** of customers qualified as **VIP**, suggesting highly selective criteria  
-- Extended RFM helped distinguish **High Spenders** with low frequency
+- Only **0.1%** of customers qualified as **VIP**, suggesting highly selective criteria (avg spend: £1,738.50) 
 
 
 ## 📊 Power BI Dashboard Overview 
@@ -112,16 +111,66 @@ This section evaluates customer value using **Recency**, **Frequency**, and **Mo
 | **Page 4 – Channel Analysis** | Channel usage, average transactions |
 | **Page 5 – RFM Analysis** | R/F/M scoring and customer labelling |
 
+
+## 🌐 Portfolio
+View this project on my website: [hyesoopark.co.uk](https://hyesoopark.co.uk)
+
 ---
 
 ## 📷 Dashboard Screenshots
 
 ![marketingcampaign_overview](marketingcampaign_overview.JPG)
----
+👉 See full interactive report screenshots in `/images` folder.
 
 ## 📦 Sample SQL Queries
 
+```sql
 
+with age_segment as ( 
+select 
+	Year(getdate()) - [Year_Birth] as age  
+	,case when Year(getdate()) - [Year_Birth] < 45 then 'Under 45' 
+		when Year(getdate()) - [Year_Birth] between 45 and 59 then '45-59'
+		when Year(getdate()) - [Year_Birth] between 60 and 74 then '60-74' 
+		when Year(getdate()) - [Year_Birth] >= 75 then '75+' 
+	else 'Unknown' 
+	end as age_segment 
+from dbo.marketing_campaign 
+)
+select 
+	age_segment 
+	,count(*) as count 
+from age_segment 
+group by age_segment 
+order by case age_segment
+        when 'Under 45' then 1
+        when '45-59' then 2
+        when '60-74' then 3
+        when '75+' then 4
+        else 5
+    end;
+
+alter table dbo.marketing_campaign 
+add Total_spend int, Total_trx int, Total_Deal_trx int  
+go 
+
+
+update dbo.marketing_campaign 
+set Total_spend = b.Total_spend, 
+	Total_trx = b.Total_trx,
+	Total_Deal_trx = b.Total_Deal_trx 
+from dbo.marketing_campaign a, 
+	(select 
+	ID 
+	,Year_Birth
+	,MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts + MntGoldProds as Total_spend 
+	,NumStorePurchases + NumWebPurchases + NumCatalogPurchases as Total_trx 
+	,NumDealsPurchases as Total_Deal_trx 
+	from dbo.marketing_campaign 
+	) b 
+where a.ID = b.ID and a.Year_Birth = b.Year_Birth
+
+```
 ---
 
 
