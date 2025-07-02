@@ -55,3 +55,12 @@ Nonprofit Operations Dashboard/
 │ ├── monthly_kpi_report.xlsx
 │ └── Operations Report.pbix
 ├── README.md # Project overview and usage
+
+---
+
+## 👩‍💻 Author
+
+**Hyesoo Park**  
+Data Analyst | Power BI, SQL, Python for Data  
+[Portfolio](https://hyesoopark.co.uk) • [LinkedIn](https://linkedin.com/in/hyesoopark) • [GitHub](https://github.com/phs928)
+
