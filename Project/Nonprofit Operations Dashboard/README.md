@@ -43,4 +43,13 @@ Three-page interactive dashboard covering:
 - Balance contact workload across the year
 
 ## 📂 File Structure 
-
+Nonprofit Operations Dashboard/
+├── data/ # Raw input data
+│ ├── Fundraising_donor_data.csv
+│ └── Fundraising_contact_reports.csv
+├── notebooks/ # Exploratory data analysis & prototyping
+│ └── Operations Report.ipynb
+├── reports/ # Output reports
+│ ├── monthly_kpi_report.xlsx
+│ └── Operations Report.pbix
+├── README.md # Project overview and usage
