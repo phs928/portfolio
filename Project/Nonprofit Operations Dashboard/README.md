@@ -1,4 +1,4 @@
-# 📊 Nonprofit Operations Dashboard
+# 📊 Nonprofit Operations Dashboard & Automation 
 
 A Python + Power BI project for automating monthly KPI reports for a nonprofit organisation.
 
