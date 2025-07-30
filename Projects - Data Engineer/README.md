@@ -4,7 +4,6 @@ This project builds an automated ETL pipeline to clean, transform, and load e-co
 
 ## 📦 Tools
 - Python (pandas)
-- Apache Airflow
 - AWS S3
 - PostgreSQL / Redshift
 
@@ -13,6 +12,5 @@ This project builds an automated ETL pipeline to clean, transform, and load e-co
 2. Clean & transform using Python
 3. Upload to S3
 4. Load into database
-5. Orchestrate with Airflow
 
 
