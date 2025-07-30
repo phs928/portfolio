@@ -50,6 +50,8 @@ Nonprofit Operations Dashboard/
 ├── data/ # Raw input data
 │ ├── Fundraising_donor_data.csv
 │ └── Fundraising_contact_reports.csv
+├── images
+│ ├── NonprofitOperation_overview.JPG
 ├── notebooks/ # Exploratory data analysis & prototyping
 │ └── Operations Report.ipynb
 ├── reports/ # Output reports
