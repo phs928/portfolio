@@ -9,7 +9,7 @@ A Python + Power BI project for automating monthly KPI reports for a nonprofit o
 
 ## 🛠️ Tools
 - Python (pandas, sqlite3, yagmail)
-- SQL
+- SQLite3 
 - Power BI
 - Excel
 
