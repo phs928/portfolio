@@ -4,9 +4,9 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 
 ## 🔍 Objectives
 - Analyse sales trends by year, month, quarter and days
-- Analyse product/Category performance
-- Analyse KPIs by customer segmentation
-- Analyse KPIs by region & state
+- Evaluate category/product performance
+- Track KPIs by customer segmentation
+- Analyse performance by region & state
 
 ## 🛠️ Tools
 - Python (pandas) 
@@ -14,7 +14,7 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 - Excel
 
 ## 📁 Data
-- Source: Superstore sales data (Excel) from Kaggle [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
+- Source: Superstore sales data (Excel) from Kaggle : [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
 - Tool: Power BI Desktop
 
 ## 📈 KPIs Tracked
@@ -23,7 +23,7 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 3. Profit Margin
 4. Total Order Count
 5. Total Customers 
-6. Average Order Value
+6. Average Order Value (AOV) 
 7. Average Order per Customer
 8. Average Profit per Product
 9. Repeat Customer %
@@ -36,7 +36,7 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 16. Top State with Highest AOV
 
 ## 📊 Power BI Dashboard 
-Interactive Report covering: 
+Interactive Report includes the following pages: 
 1. **Overview**  
    - Key KPIs: Total Sales, Profit, Margin, Orders, AOV  
    - Monthly sales/profit trends
@@ -60,7 +60,7 @@ Interactive Report covering:
 
 ## 🧠 Visual & Insight Highlights
 
-- Effective use of KPI cards, line/bar/stacked bar/treemap visuals
+- KPI cards, line/bar/stacked bar/treemap used effectively 
 - Business insights include:
   - Technology category drives revenue
   - "Consumer" segment contributes the most
@@ -69,7 +69,7 @@ Interactive Report covering:
 ## 🔄 Automation Note
 
 Currently based on a **static Excel file**.  
-Automation features are not implemented but could be implemented using:
+Automation not implemented due to cost/complexity, but future-ready:
 - Google Drive / Power BI Service integration
 - Cloud database setup (e.g., PostgreSQL, MySQL, Snowflake)
 
