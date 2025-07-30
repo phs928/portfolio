@@ -3,7 +3,7 @@
 This project builds an automated ETL pipeline to clean, transform, and load e-commerce sales data using **Python** and **AWS S3**. 
 It simulates a real-world data engineering workflow from raw file ingestion to cloud-based data storage.
 
-## 📦 Tools
+## 🛠️ Tools
 - Python (pandas)
 - AWS S3
 - PostgreSQL / Redshift
