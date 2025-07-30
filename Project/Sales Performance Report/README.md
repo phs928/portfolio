@@ -85,6 +85,8 @@ Automation features are not implemented but could be implemented using:
 Sales Performance Report/
 ├── data/ # Raw input data
 │ ├── Superstore_sales.csv
+├── images
+│ ├── SalesReport_product.JPG
 ├── notebooks/ # Exploratory data analysis & prototyping
 │ └── Sales Performance Report.ipynb
 ├── reports/ # Output reports
