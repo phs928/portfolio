@@ -54,7 +54,7 @@ Nonprofit Operations Dashboard/
 │ └── Operations Report.ipynb
 ├── reports/ # Output reports
 │ ├── monthly_kpi_report.xlsx
-│ └── Operations Report.pbix
+│ └── Operations Report.pdf
 ├── README.md # Project overview and usage
 ```
 ---
