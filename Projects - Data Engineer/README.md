@@ -6,12 +6,14 @@ It simulates a real-world data engineering workflow from raw file ingestion to c
 ## 🛠️ Tools
 - Python (pandas)
 - AWS S3
-- PostgreSQL / Redshift
+- SQL (PostgreSQL / Redshift)
+- Amazon Quicksight
 
 ## 🔄 Workflow Steps
-1. Ingest raw e-commerce sales data
-2. Clean & transform using Python
-3. Upload to AWS S3
-4. Load final dataset into database  
-
+1. Ingest raw e-commerce sales data (csv) 
+2. Clean and transform using Python
+3. Upload cleaned dataset to AWS S3
+4. Load final dataset into Redshift
+5. Build dimensional tables and aggregated views using SQL
+6. Create interactive dashboards using Amazon Quicksight
 
