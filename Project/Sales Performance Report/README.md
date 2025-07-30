@@ -56,7 +56,7 @@ Interactive Report includes the following pages:
    - Key insights summary  
    - Treemap: Segment × Category vs Sales
 
-![Report Screenshot](images/SalesReport_product.JPG) 
+![Report Screenshot](images/SalesReport_Product.JPG) 
 
 ## 🧠 Visual & Insight Highlights
 
