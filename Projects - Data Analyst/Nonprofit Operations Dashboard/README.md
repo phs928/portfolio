@@ -37,7 +37,7 @@ Three-page interactive dashboard covering:
 - Donor Insight 
 - Contact Performance
 
-![Dashboard Screenshot](images/NonprofitOperation_Thumb.JPG)
+![Dashboard Screenshot](image/NonprofitOperation_Thumb.JPG)
 
 ## 🔮 Insights & Recommendations
 - Focus on high-value age and wealth segments
