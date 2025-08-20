@@ -175,4 +175,8 @@ where a.ID = b.ID and a.Year_Birth = b.Year_Birth
 ```
 ---
 
+## 👩‍💻 Author
 
+**Hyesoo Park**  
+Data Analyst | Power BI, SQL, Python for Data  
+[Portfolio](https://hyesoopark.co.uk) • [LinkedIn](https://linkedin.com/in/hyesoopark) • [GitHub](https://github.com/phs928/portfolio)
