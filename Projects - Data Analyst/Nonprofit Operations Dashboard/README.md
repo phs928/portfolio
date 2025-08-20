@@ -65,5 +65,5 @@ Nonprofit Operations Dashboard/
 
 **Hyesoo Park**  
 Data Analyst | Power BI, SQL, Python for Data  
-[Portfolio](https://hyesoopark.co.uk) • [LinkedIn](https://linkedin.com/in/hyesoopark) • [GitHub](https://github.com/phs928)
+[Portfolio](https://hyesoopark.co.uk) • [LinkedIn](https://linkedin.com/in/hyesoopark) • [GitHub](https://github.com/phs928/portfolio)
 
