@@ -1,6 +1,6 @@
 # 📊 Customer Segmentation & Sales Analysis  
 
-This project analyses customer behaviour and marketing effectiveness using SQL and Power BI. 
+This project analyses customer transaction data by product type and purchase channel, and applied RFM to segment customers using SQL and Power BI. 
 It is divided into 4 parts: 
 
 1. Customer Segmentation Analysis 
