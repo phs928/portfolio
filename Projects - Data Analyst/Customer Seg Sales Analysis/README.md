@@ -119,7 +119,7 @@ View this project on my website: [hyesoopark.co.uk](https://hyesoopark.co.uk)
 
 ## 📷 Dashboard Screenshots
 
-![marketingcampaign_overview](images/marketingcampaign_overview.JPG)
+![Dashboard Images](images/CustSegSales_RFM.JPG)
 
 
 👉 See full interactive report screenshots in `/images` folder.
