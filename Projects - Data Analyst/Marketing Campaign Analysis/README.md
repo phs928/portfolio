@@ -1,7 +1,7 @@
-# 📊 Marketing Campaign Analysis 
+# 📊 Customer Segmentation & Sales Analysis  
 
 This project analyses customer behaviour and marketing effectiveness using SQL and Power BI. 
-It is divided into 3 parts: 
+It is divided into 4 parts: 
 
 1. Customer Segmentation Analysis 
 2. Product Type Analysis 
