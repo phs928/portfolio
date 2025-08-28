@@ -7,17 +7,19 @@ A Python + Power BI project for automating monthly KPI reports for a nonprofit o
 - Automate KPI extraction and reporting
 - Build a Power BI dashboard for ongoing monitoring
 
+## 📁 Dataset
+
+- **Source**: [Kaggle - Fundraising data]([https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign](https://www.kaggle.com/datasets/michaelpawlus/fundraising-data?select=data_science_for_fundraising_donor_data.csv)
+- **Data**: Donors, Contact 
+- **Size**: Donors: 34508, Contact: 196 
+
+
 ## 🛠️ Tools
 - Python (pandas, sqlite3, yagmail)
 - SQLite3 
 - Power BI
 - Excel
 
-## 📁 Dataset
-
-- **Source**: [Kaggle - Fundraising data]([https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign](https://www.kaggle.com/datasets/michaelpawlus/fundraising-data?select=data_science_for_fundraising_donor_data.csv)
-- **Data**: Donors, Contact 
-- **Size**: Donors: 34508, Contact: 196 
 
 ## 📈 KPIs Tracked
 1. Total Giving
