@@ -14,12 +14,11 @@ It is divided into 4 parts:
 - **Data**: Customer demographics, campaign responses, product spending, channel interactions
 - **Size**: 2,216 records after cleaning 
 
-## 🧰 Tools Used 
+## 🛠️ Tools
 
 - **Microsoft SQL Server**: Data cleaning and preprocessing 
 - **Power BI**: Dashboard development and visual insight generation
 
-  
 
 ## 🔎 1. Customer Segmentation Analysis 
 
