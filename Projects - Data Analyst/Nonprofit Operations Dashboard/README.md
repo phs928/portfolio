@@ -9,9 +9,9 @@ A Python + Power BI project for automating monthly KPI reports for a nonprofit o
 
 ## 📁 Dataset
 
-- **Source**: [Kaggle - Fundraising data]([https://www.kaggle.com/datasets/rodsaldanha/arketing-campaign](https://www.kaggle.com/datasets/michaelpawlus/fundraising-data?select=data_science_for_fundraising_donor_data.csv)
+- **Source**: [Kaggle - Fundraising data](https://www.kaggle.com/datasets/michaelpawlus/fundraising-data?select=data_science_for_fundraising_donor_data.csv)
 - **Data**: Donors, Contact 
-- **Size**: Donors: 34508, Contact: 196 
+- **Size**: Donors: 34508 records after cleaning, Contact: 196 records 
 
 
 ## 🛠️ Tools
