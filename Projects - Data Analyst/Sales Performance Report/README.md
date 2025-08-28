@@ -8,14 +8,14 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 - Track KPIs by customer segmentation
 - Analyse performance by region & state
 
+## 📁 Dataset
+- Source: Superstore sales data (Excel) from Kaggle : [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
+
+
 ## 🛠️ Tools
 - Python (pandas) 
 - Power BI
 - Excel
-
-## 📁 Dataset
-- Source: Superstore sales data (Excel) from Kaggle : [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
-- Tool: Power BI Desktop
 
 ## 📈 KPIs Tracked
 1. Total Sales 
