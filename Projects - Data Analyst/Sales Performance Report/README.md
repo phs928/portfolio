@@ -13,7 +13,7 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 - Power BI
 - Excel
 
-## 📁 Data
+## 📁 Dataset
 - Source: Superstore sales data (Excel) from Kaggle : [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
 - Tool: Power BI Desktop
 
