@@ -65,11 +65,11 @@ Amazon QuickSight (Direct Query) → Dashboard
 - 🗺️ Top-performing cities and states by revenue
 - 📦 Top product categories by revenue
 - 📦 Key Metrics:
-  - **Total Revenue**: $13.6M
-  - **Total Freight Value**: $2.3M
+  - **Total Revenue**: `$13.6M`
+  - **Total Freight Value**: `$2.3M`
   - **Total Orders**: `98,666`
 
-## 🧹 Data Cleaning Highlights
+## Data Cleaning Highlights
 
 - Removed nulls and empty strings from key fields
 - Normalised date formats and product categories
