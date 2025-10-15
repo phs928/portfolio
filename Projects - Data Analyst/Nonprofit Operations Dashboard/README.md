@@ -5,7 +5,7 @@ A Python + Power BI project for automating monthly KPI reports for a nonprofit o
 ## 📑 Table of Contents
 1. [Objectives](#-objectives)
 2. [Dataset](#-dataset)
-3. [Tools](#-tools)
+3. [Tools](#%EF%B8%8F-tools)
 4. [KPIs Tracked](#-kpis-tracked)
 5. [Automation](#-automation)
 6. [Power BI Dashboard](#-power-bi-dashboard)
