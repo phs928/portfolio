@@ -43,5 +43,27 @@ Athena SQL Modelling → Fact & Dim tables
    ↓
 S3 (Gold Layer) → Athena (Partitioned)
    ↓
-Amazon QuickSight (Direct Query) → Dashboard 
+Amazon QuickSight (Direct Query) → Dashboard
+
+
+
+**## Dashboard Screenshots**
+
+![Dashboard Images](images/AWS_QuickSight_Olist_Dashboard.JPG)
+
+
+👉 See full interactive report screenshots in `/images` folder.
+
+## Dashboard Features
+
+- 📈 Total revenue and order trends over time
+- 🗺️ Top-performing cities and states by revenue
+- 📦 Top product categories by revenue
+- 📦 Key Metrics:
+  - **Total Revenue**: $13.6M
+  - **Total Freight Value**: $2.3M
+  - **Total Orders**: `98,666`
+
+---
+
 
