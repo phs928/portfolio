@@ -1,0 +1,43 @@
+{
+  "name" : "olist-silver-to-gold",
+  "jobMode" : "SCRIPT",
+  "description" : "",
+  "role" : "arn:aws:iam::396608768227:role/service-role/AWSGlueServiceRole-olist",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://hyesoo-de-ecommerce/tmp/olist-silver-to-gold.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-glue-datacatalog" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--TempDir" : "s3://aws-glue-assets-396608768227-eu-west-2/temporary/",
+    "--load_date" : "2025-09-09",
+    "--silver_bucket" : "s3://hyesoo-de-ecommerce/olist/silver",
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-396608768227-eu-west-2/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--gold_bucket" : "s3://hyesoo-de-ecommerce/olist/gold",
+    "--job-language" : "python",
+    "--JOB_NAME" : "olist-silver-to-gold"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 10,
+  "timeout" : 480,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "5.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "portfolio",
+    "branch" : "master",
+    "folder" : "olist-silver-to-gold"
+  }
+}
