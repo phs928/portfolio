@@ -9,12 +9,12 @@ It is divided into 4 parts:
 4. RFM Analysis
 
 ## 📑 Table of Contents
-1. [📁 Dataset](#-📁-dataset)
+1. [📁 Dataset](#dataset)
 2. [Tools](#tools)
-3. [1. Customer Segmentation Analysis](#1.-customer-segmentation-analysis)
-4. [2. Product Type Analysis](#2.-product-type-analysis)
-5. [3. Purchase Channel Analysis](#3.-purchase-channelcaAnalysis)
-6. [4. RFM Analysis](#4.-rfm-analysis)
+3. [1. Customer Segmentation Analysis](#1-customer-segmentation-analysis)
+4. [2. Product Type Analysis](#2-product-type-analysis)
+5. [3. Purchase Channel Analysis](#3-purchase-channelcaAnalysis)
+6. [4. RFM Analysis](#4-rfm-analysis)
 7. [Power BI Dashboard Overview](#power-bi-dashboard-overview)
 8. [Dashboard Screenshots](#dashboard-screenshots) 
 9. [Sample SQL Queries](#sample-sql-queries)
