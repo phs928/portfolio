@@ -2,11 +2,24 @@
 
 An interactive Sales Report built with Python + Power BI for a profit/start-up organisation.
 
+## 📑 Table of Contents
+1. [Objectives](#-objectives)
+2. [Dataset](#-dataset)
+3. [Tools](#-tools)
+4. [KPIs Tracked](#-kpis-tracked)
+5. [Power BI Dashboard](#-power-bi-dashboard)
+7. [Visual & Insight Highlights](#-visual--insight-highlights)
+8. [Automation Note](#-automation-note)
+9. [Future Enhancements](#-future-enhancements)
+10. [File Structure](#-file-structure)
+11. [Author & Contact](#%E2%80%8D-author--contact)
+
 ## 🔍 Objectives
 - Analyse sales trends by year, month, quarter and days
 - Evaluate category/product performance
 - Track KPIs by customer segmentation
 - Analyse performance by region & state
+
 
 ## 📁 Dataset
 - Source: Superstore sales data (Excel) from Kaggle : [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
@@ -16,6 +29,7 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 - Python (pandas) 
 - Power BI
 - Excel
+
 
 ## 📈 KPIs Tracked
 1. Total Sales 
@@ -34,6 +48,7 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 14. Highest Sales Region/State
 15. Lowest Profit Margin State
 16. Top State with Highest AOV
+
 
 ## 📊 Power BI Dashboard 
 Interactive Report includes the following pages: 
@@ -95,7 +110,7 @@ Sales Performance Report/
 ```
 ---
 
-## 👩‍💻 Author
+## 👩‍💻 Author & Contact 
 
 **Hyesoo Park**  
 Data Analyst | Power BI, SQL, Python for Data  
