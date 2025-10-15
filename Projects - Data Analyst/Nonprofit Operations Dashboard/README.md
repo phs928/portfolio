@@ -11,7 +11,7 @@ A Python + Power BI project for automating monthly KPI reports for a nonprofit o
 6. [Power BI Dashboard](#-power-bi-dashboard)
 7. [Insights & Recommendations](#-insights--recommendations) 
 8. [File Structure](#-file-structure)
-11. [Author & Contact](#%E2%80%8D-author--contact)
+9. [Author & Contact](#%E2%80%8D-author--contact)
 
 ## 🔍 Objectives
 - Analyse donation and contact patterns
