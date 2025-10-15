@@ -18,7 +18,7 @@ It is divided into 4 parts:
 7. [Power BI Dashboard Overview](#-power-bi-dashboard-overview)
 8. [Dashboard Screenshots](#-dashboard-screenshots) 
 9. [Sample SQL Queries](#-sample-sql-queries)
-10. [Author & Contact](#-author-&-contact) 
+10. [Author & Contact](#-author--contact)
 
 ## 📁 Dataset
 
