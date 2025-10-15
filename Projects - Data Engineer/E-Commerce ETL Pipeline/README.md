@@ -39,11 +39,11 @@ Data Pipeline Flow
 Kaggle CSVs
    ↓
 AWS S3 (Raw Layer)
-   ↓
+   ↓ 
 AWS Glue (ETL)
-   ↓
-S3 (Silver Layer) → Athena
-   ↓
+   ↓ **Bronze → Silver:** Cleans and normalizes raw CSV data from S3  
+S3 (Silver Layer) → Athena 
+   ↓ **Silver → Gold:** Aggregates and builds final fact/dim tables 
 Athena SQL Modelling → Fact & Dim tables
    ↓
 S3 (Gold Layer) → Athena (Partitioned)
