@@ -3,8 +3,13 @@
 This project builds an end-to-end **data pipeline and analytics workflow** using AWS services.
 It simulates a real-world data engineering workflow from raw file ingestion to building an interactive dashboard that provides insights into sales, revenue, and customer trends.
 
-## Dataset 
+## Dataset
 Brazillian supermarket, Olist E-Commerce dataset: [Olist eCommerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) 
+The dataset contains: 
+- 112K+ orders
+- 99K+ customers
+- 32K products
+- Multiple geographies (city/state level) 
 
 ## Business Overview 
 To deliver a scalable, cloud-based data pipeline that enables interactive business reporting on revenue trends, product category performance, and regional sales distribution. 
@@ -63,6 +68,21 @@ Amazon QuickSight (Direct Query) → Dashboard
   - **Total Revenue**: $13.6M
   - **Total Freight Value**: $2.3M
   - **Total Orders**: `98,666`
+
+## 🧹 Data Cleaning Highlights
+
+- Removed nulls and empty strings from key fields
+- Normalised date formats and product categories
+- Handled inconsistent city/state naming
+- Casted revenue fields to numeric types
+- Generated date dimension and load_date partitioning
+
+## Key Learnings
+
+- Developed modular Glue jobs with idempotent partition writes
+- Built SQL data models in Athena with star schema
+- Created a fully cloud-based BI dashboard for real-world sales data 
+
 
 ---
 
