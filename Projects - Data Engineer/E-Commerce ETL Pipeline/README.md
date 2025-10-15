@@ -57,7 +57,7 @@ Amazon QuickSight (Direct Query) → Dashboard
 ![Dashboard Images](image/AWS_QuickSight_Olist_Dashboard.JPG)
 
 
-👉 See full interactive report screenshots in `/images` folder.
+👉 See full interactive report screenshots in `/image` folder.
 
 ## Dashboard Features
 
