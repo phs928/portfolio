@@ -6,6 +6,13 @@ Text data was cleaned, filtered for stopwords, and lemmatised to identify the mo
 The result highlighted dominant entities such as Google, Microsoft, and OpenAI, indicating their strong presence in current AI discourse. 
 This project demonstrates basic API handling, NLP techniques and effective keyword visualisation with WordCloud. 
 
+## 📑 Table of Contents
+1. [Tools & Libraries Used](#-tools--libraries-used)
+2. [What It Does](#-what-it-does)
+3. [What It Says](#-what-it-says)
+4. [Sample Output](#-sample-output)
+5. [Author & Contact](#%E2%80%8D-author--contact)
+
 ## 🔧 Tools & Libraries Used
 - Python
 - NewsAPI
@@ -30,7 +37,7 @@ This project demonstrates basic API handling, NLP techniques and effective keywo
 ![wordcloud](wordcloud.png)
 
 
-## 👩‍💻 Author
+## 👩‍💻 Author & Contact
 
 **Hyesoo Park**  
 Data Analyst | Power BI, SQL, Python for Data  
