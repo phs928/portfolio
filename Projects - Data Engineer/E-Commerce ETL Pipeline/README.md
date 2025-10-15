@@ -90,7 +90,7 @@ This process was to develop fact and dimension tables using a star schema.
 I used order_item as a fact table, then customers, seller, product & date as dimension tables. 
 Please see glue_jobs/olist_silver_to_gold folder for details. 
 
-![Image - silver-to-gold](image/AWS_Glue_silver-gold.JPG) 
+![Image - silver-to-gold](image/AWS_Glue_silver_gold.JPG) 
 
 Next, I added datasets to Amazon QuickSight for creating an interactive dashboard using the olist_gold dataset. 
 First of all, I defined relationships between fact and dimension tables using DirectQuery. 
