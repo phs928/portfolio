@@ -72,13 +72,32 @@ Amazon QuickSight (Final Dashboard)
 
 ## Workflow Screenshots 
 
-I first uploaded the CSV files in AWS S3 bucket as olist/raw folder.  
+I first uploaded the CSV files to the AWS S3 bucket as olist/raw folder.  
 
 ![Image - S3](image/AWS_S3_raw.JPG) 
 
-Then I created and ran the AWS Glue Crawler to create schema. 
+Then I created and ran the AWS Glue Crawler to create a schema. 
 
 ![Image - raw crawler](image/AWS_Glue_raw_crawler.JPG) 
+
+Next, I created AWS Glue ETL Job, bronze-to-silver, in order to write and save to the silver bucket as S3 parquet, partitioned by load_date. 
+Please see glue_jobs/olist_bronze_to_silver folder for details. 
+
+![Image - bronze-to-silver](image/AWS_Glue_bronze_silver.JPG) 
+
+After running Glue Crawler for the Silver layer, I ran the silver-to-gold Job to save to the gold bucket as S3 parquet again. 
+This process was to develop fact and dimension tables using a star schema. 
+I used order_item as a fact table, then customers, seller, product & date as dimension tables. 
+Please see glue_jobs/olist_silver_to_gold folder for details. 
+
+![Image - silver-to-gold](image/AWS_Glue_silver-gold.JPG) 
+
+Next, I added datasets to Amazon QuickSight for creating an interactive dashboard using the olist_gold dataset. 
+First of all, I defined relationships between fact and dimension tables using DirectQuery. 
+
+![Image - QuickSight Query](image/AWS_QuickSight_Query.JPG) 
+
+Then I produced an interactive dashboard, which you can find below. 
 
 
 ## Dashboard Screenshot
