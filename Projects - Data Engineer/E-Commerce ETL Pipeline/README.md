@@ -15,7 +15,7 @@ It simulates a real-world data engineering workflow from raw file ingestion to b
 7. [Dashboard Features](#dashboard-features)
 8. [Data Cleaning Highlights](#data-cleaning-highlights) 
 9. [Key Learnings](#key-learnings)
-10. [Author](#author)
+10. [Author & Contact](#%E2%80%8D-author--contact)
 
 ---
 
@@ -105,7 +105,7 @@ Amazon QuickSight (Final Dashboard)
 
 ---
 
-## 👩‍💻 Author
+## 👩‍💻 Author & Contact 
 
 **Hyesoo Park**  
 Data Analyst | Power BI, SQL, Python for Data  
