@@ -71,7 +71,14 @@ Amazon QuickSight (Final Dashboard)
 ```
 
 ## Workflow Screenshots 
+
+I first uploaded the CSV files in AWS S3 bucket as olist/raw folder.  
+
 ![Image - S3](image/AWS_S3_raw.JPG) 
+
+Then I created and ran the AWS Glue Crawler to create schema. 
+
+![Image - raw crawler](image/AWS_Glue_raw_crawler.JPG) 
 
 
 ## Dashboard Screenshot
