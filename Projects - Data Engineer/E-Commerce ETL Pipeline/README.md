@@ -44,10 +44,10 @@ Athena SQL Modelling → Fact & Dim tables
 S3 (Gold Layer) → Athena (Partitioned)
    ↓
 Amazon QuickSight (Direct Query) → Dashboard
+```
 
 
-
-**## Dashboard Screenshots**
+## Dashboard Screenshots
 
 ![Dashboard Images](images/AWS_QuickSight_Olist_Dashboard.JPG)
 
