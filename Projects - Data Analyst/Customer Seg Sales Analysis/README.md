@@ -10,7 +10,7 @@ It is divided into 4 parts:
 
 ## 📑 Table of Contents
 1. [Dataset](#-dataset)
-2. [Tools](#-tools)
+2. [Tools](#%EF%B8%8F-tools)
 3. [1. Customer Segmentation Analysis](#-1-customer-segmentation-analysis)
 4. [2. Product Type Analysis](#-2-product-type-analysis)
 5. [3. Purchase Channel Analysis](#-3-purchase-channelcaAnalysis)
