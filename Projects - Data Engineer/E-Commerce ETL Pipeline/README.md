@@ -11,10 +11,11 @@ It simulates a real-world data engineering workflow from raw file ingestion to b
 3. [Architecture](#architecture)
 4. [Tech Stack](#tech-stack)
 5. [Workflow Steps](#workflow-steps)
-6. [Dashboard Features](#dashboard-features)
-7. [Data Cleaning Highlights](#data-cleaning-highlights) 
-8. [Key Learnings](#key-learnings)
-9. [Author](#author)
+6. [Dashboard Screenshot](#dashboard-screenshot)
+7. [Dashboard Features](#dashboard-features)
+8. [Data Cleaning Highlights](#data-cleaning-highlights) 
+9. [Key Learnings](#key-learnings)
+10. [Author](#author)
 
 ---
 
@@ -69,7 +70,7 @@ Amazon QuickSight (Final Dashboard)
 ```
 
 
-## Dashboard Screenshots
+## Dashboard Screenshot
 
 ![Dashboard Images](image/AWS_QuickSight_Olist_Dashboard.JPG)
 
