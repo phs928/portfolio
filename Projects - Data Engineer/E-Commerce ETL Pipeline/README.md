@@ -6,7 +6,7 @@ It simulates a real-world data engineering workflow from raw file ingestion to b
 ## Dataset
 Brazillian supermarket, Olist E-Commerce dataset: [Olist eCommerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) 
 The dataset contains: 
-- 112K+ orders
+- 112K+ orders (98K+ unique orders) 
 - 99K+ customers
 - 32K+ products
 - Multiple geographies (city/state level) 
@@ -67,7 +67,8 @@ Amazon QuickSight (Direct Query) → Dashboard
 - 📦 Key Metrics:
   - **Total Revenue**: `$13.6M`
   - **Total Freight Value**: `$2.3M`
-  - **Total Orders**: `98,666`
+  - **Total Orders**: `112,650`
+  - **Total Unique Orders**: `98,666`
 
 ## Data Cleaning Highlights
 
