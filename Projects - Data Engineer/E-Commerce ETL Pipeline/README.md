@@ -3,6 +3,21 @@
 This project builds an end-to-end **data pipeline and analytics workflow** using AWS services.
 It simulates a real-world data engineering workflow from raw file ingestion to building an interactive dashboard that provides insights into sales, revenue, and customer trends.
 
+---
+
+## 📑 Table of Contents
+1. [Dataset](#dataset)
+2. [Project Overview](#project-overview)
+3. [Architecture](#architecture)
+4. [Tech Stack](#tech-stack)
+5. [Workflow Steps](#workflow-steps)
+6. [Dashboard Features](#dashboard-features)
+7. [Data Cleaning Highlights](#data-cleaning-highlights) 
+8. [Key Learnings](#key-learnings)
+9. [Author](#author)
+
+---
+
 ## Dataset
 Brazillian supermarket, Olist E-Commerce dataset: [Olist eCommerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) 
 The dataset contains: 
@@ -11,7 +26,7 @@ The dataset contains:
 - 32K+ products
 - Multiple geographies (city/state level) 
 
-## Business Overview 
+## Project Overview 
 To deliver a scalable, cloud-based data pipeline that enables interactive business reporting on revenue trends, product category performance, and regional sales distribution. 
 
 ## Architecture 
@@ -38,17 +53,19 @@ Data Pipeline Flow
 ```plaintext
 Kaggle CSVs
    ↓
-AWS S3 (Raw Layer)
-   ↓ 
-AWS Glue (ETL)
-   ↓ **Bronze → Silver:** Cleans and normalizes raw CSV data from S3  
-S3 (Silver Layer) → Athena 
-   ↓ **Silver → Gold:** Aggregates and builds final fact/dim tables 
-Athena SQL Modelling → Fact & Dim tables
-   ↓
-S3 (Gold Layer) → Athena (Partitioned)
-   ↓
-Amazon QuickSight (Direct Query) → Dashboard
+AWS S3 (Bronze Layer: Raw CSVs)
+      ↓
+AWS Glue (bronze-to-silver jobs)
+      ↓
+AWS S3 (Silver Layer: Cleaned Parquet)
+      ↓
+AWS Glue (silver-to-gold jobs)
+      ↓
+AWS S3 (Gold Layer: Star Schema: fact & dim tables)
+      ↓
+Athena (SQL Query Layer)
+      ↓
+Amazon QuickSight (Final Dashboard)
 ```
 
 
