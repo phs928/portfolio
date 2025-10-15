@@ -8,7 +8,7 @@ Brazillian supermarket, Olist E-Commerce dataset: [Olist eCommerce dataset](http
 The dataset contains: 
 - 112K+ orders
 - 99K+ customers
-- 32K products
+- 32K+ products
 - Multiple geographies (city/state level) 
 
 ## Business Overview 
