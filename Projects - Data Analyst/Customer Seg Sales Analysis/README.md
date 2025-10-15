@@ -9,7 +9,7 @@ It is divided into 4 parts:
 4. RFM Analysis
 
 ## 📑 Table of Contents
-1. [Dataset](#dataset)
+1. [📁 Dataset](#dataset)
 2. [Tools](#tools)
 3. [1. Customer Segmentation Analysis](#1.-customer-segmentation-analysis)
 4. [2. Product Type Analysis](#2.-product-type-analysis)
