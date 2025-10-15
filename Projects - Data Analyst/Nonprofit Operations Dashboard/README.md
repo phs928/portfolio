@@ -2,6 +2,17 @@
 
 A Python + Power BI project for automating monthly KPI reports for a nonprofit organisation.
 
+## 📑 Table of Contents
+1. [Objectives](#-objectives)
+2. [Dataset](#-dataset)
+3. [Tools](#-tools)
+4. [KPIs Tracked](#-kpis-tracked)
+5. [Automation](#-automation)
+6. [Power BI Dashboard](#-power-bi-dashboard)
+7. [Insights & Recommendations](#-insights--recommendations) 
+8. [File Structure](#-file-structure)
+11. [Author & Contact](#%E2%80%8D-author--contact)
+
 ## 🔍 Objectives
 - Analyse donation and contact patterns
 - Automate KPI extraction and reporting
@@ -69,7 +80,7 @@ Nonprofit Operations Dashboard/
 ```
 ---
 
-## 👩‍💻 Author
+## 👩‍💻 Author & Contact 
 
 **Hyesoo Park**  
 Data Analyst | Power BI, SQL, Python for Data  
