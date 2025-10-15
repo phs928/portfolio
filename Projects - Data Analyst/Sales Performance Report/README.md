@@ -5,7 +5,7 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 ## 📑 Table of Contents
 1. [Objectives](#-objectives)
 2. [Dataset](#-dataset)
-3. [Tools](#-tools)
+3. [Tools](#%EF%B8%8F-tools)
 4. [KPIs Tracked](#-kpis-tracked)
 5. [Power BI Dashboard](#-power-bi-dashboard)
 7. [Visual & Insight Highlights](#-visual--insight-highlights)
