@@ -6,7 +6,19 @@ It is divided into 4 parts:
 1. Customer Segmentation Analysis 
 2. Product Type Analysis 
 3. Purchase Channel Analysis
-4. RFM Analysis 
+4. RFM Analysis
+
+## 📑 Table of Contents
+1. [Dataset](#dataset)
+2. [Tools](#tools)
+3. [1. Customer Segmentation Analysis](#1.-customer-segmentation-analysis)
+4. [2. Product Type Analysis](#2.-product-type-analysis)
+5. [3. Purchase Channel Analysis](#3.-purchase-channelcaAnalysis)
+6. [4. RFM Analysis](#4.-rfm-analysis)
+7. [Power BI Dashboard Overview](#power-bi-dashboard-overview)
+8. [Dashboard Screenshots](#dashboard-screenshots) 
+9. [Sample SQL Queries](#sample-sql-queries)
+10. [Author](#author) 
 
 ## 📁 Dataset
 
@@ -111,11 +123,6 @@ This section evaluates customer value using **Recency**, **Frequency**, and **Mo
 | **Page 5 – RFM Analysis** | R/F/M scoring and customer labelling |
 
 
-## 🌐 Portfolio
-View this project on my website: [hyesoopark.co.uk](https://hyesoopark.co.uk)
-
----
-
 ## 📷 Dashboard Screenshots
 
 ![Dashboard Images](images/CustSegSales_RFM.JPG)
@@ -172,6 +179,11 @@ from dbo.marketing_campaign a,
 where a.ID = b.ID and a.Year_Birth = b.Year_Birth
 
 ```
+---
+
+## 🌐 Portfolio
+View this project on my website: [hyesoopark.co.uk](https://hyesoopark.co.uk)
+
 ---
 
 ## 👩‍💻 Author
