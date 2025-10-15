@@ -4,21 +4,44 @@ This project builds an end-to-end **data pipeline and analytics workflow** using
 It simulates a real-world data engineering workflow from raw file ingestion to building an interactive dashboard that provides insights into sales, revenue, and customer trends.
 
 ## Dataset 
-[Olist eCommerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) 
+Brazillian supermarket, Olist E-Commerce dataset: [Olist eCommerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) 
+
+## Business Overview 
+To deliver a scalable, cloud-based data pipeline that enables interactive business reporting on revenue trends, product category performance, and regional sales distribution. 
+
+## Architecture 
+- **AWS S3**: Raw → Silver → Gold layer storage
+- **AWS Glue**: ETL and data cleaning scripts (PySpark)
+- **AWS Athena**: Data modelling via SQL (fact & dimension tables)
+- **Amazon QuickSight**: Interactive dashboard with direct Athena connection
+
+## Tech Stack
+
+| Tool/Service         | Purpose                          |
+|----------------------|----------------------------------|
+| **AWS S3**           | Data lake for raw/silver/gold    |
+| **AWS Glue**         | Data cleaning & transformation   |
+| **AWS Athena**       | Query engine for gold layer      |
+| **QuickSight**       | BI dashboard                     |
+| **PySpark**          | Data wrangling in Glue scripts   |
+| **SQL**              | Data modelling in Athena         |
 
 
-## 🔄 Workflow Steps
-1. Ingest raw e-commerce sales data (csv) 
-2. Upload raw dataset to AWS S3 (Bronze)
-3. Use AWS Glue crawler to create schema
-4. Use AWS Glue Job to 
-5. Load final dataset into Redshift
-6. Build dimensional tables and aggregated views using SQL
-7. Create interactive dashboards using Amazon Quicksight
+## Workflow Steps
+Data Pipeline Flow
 
+```plaintext
+Kaggle CSVs
+   ↓
+AWS S3 (Raw Layer)
+   ↓
+AWS Glue (ETL)
+   ↓
+S3 (Silver Layer) → Athena
+   ↓
+Athena SQL Modelling → Fact & Dim tables
+   ↓
+S3 (Gold Layer) → Athena (Partitioned)
+   ↓
+Amazon QuickSight (Direct Query) → Dashboard 
 
-## 🛠️ Tools
-- Python (pandas)
-- AWS S3
-- SQL (PostgreSQL / Redshift)
-- Amazon Quicksight
