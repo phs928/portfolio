@@ -22,8 +22,8 @@ An interactive Sales Report built with Python + Power BI for a profit/start-up o
 
 
 ## 📁 Dataset
-- Source: Superstore sales data (Excel) from Kaggle : [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
-
+- **Source**: Superstore sales data (Excel) from Kaggle : [View](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
+- **Size**: 5009 total orders  
 
 ## 🛠️ Tools
 - Python (pandas) 
